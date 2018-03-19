@@ -12,6 +12,4 @@ class LocalSettings
     public function __construct() { }
 }
 
-echo "Hello World";
-
 ?>

@@ -15,6 +15,7 @@ class DBGenericRepository
 
     public function delete(int $id) {
         try {
+            if (empty($this->dbManager->GetConnection())) { return; }
             $stmt = $this->dbManager->GetConnection()->prepare("DELETE FROM $this->tableName WHERE ID = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();

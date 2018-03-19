@@ -31,23 +31,24 @@ class DBUserRepository extends DBGenericRepository
 
     public function insert(User $item) {
         try {
-            $stmt = $this->dbManager->GetConnection()->prepare("INSERT INTO $this->tableName VALUES(:Username, :Password, :Email, :DateCreated, :AuthToken)");
+            $query = "INSERT INTO $this->tableName (Username, Password, Email, DateCreated, AuthToken) VALUES(:Username, :Password, :Email, :DateCreated, :AuthToken)";
+
+            $stmt = $this->dbManager->GetConnection()->prepare($query);
             $stmt->execute(array(
-              ':Username' => $item->Username,
-              ':Password' => $item->Password,
-              ':Email' => $item->Email,
-              ':DateCreated' => $item->DateCreated,
-              ':AuthToken' => $item->AuthToken
+                ':Username' => $item->Username,
+                ':Password' => $item->Password,
+                ':Email' => $item->Password,
+                ':DateCreated' => $item->DateCreated,
+                ':AuthToken' => $item->AuthToken
             ));
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'User');
-            $fetch = $stmt->fetchAll();
-            return $fetch[0];
+            return true;
         }
         catch(PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
-        return array();
+
+        return false;
     }
 
     public function update(User $item) {
