@@ -31,7 +31,8 @@ class DBUserRepository extends DBGenericRepository
 
     public function insert(User $item) {
         try {
-            $query = "INSERT INTO $this->tableName (Username, Password, Email, DateCreated, AuthToken) VALUES(:Username, :Password, :Email, :DateCreated, :AuthToken)";
+            $query = "INSERT INTO $this->tableName (Username, Password, Email, DateCreated, AuthToken) ".
+                "VALUES(:Username, :Password, :Email, :DateCreated, :AuthToken)";
 
             $stmt = $this->dbManager->GetConnection()->prepare($query);
             $stmt->execute(array(
@@ -53,23 +54,29 @@ class DBUserRepository extends DBGenericRepository
 
     public function update(User $item) {
         try {
-            $query = "UPDATE $this->tableName
-                  SET Username = '".$this->dbManager->escapeString($item->Username)."',
-                      Password = '".$this->dbManager->escapeString($item->Password)."',
-                      Email = '".$this->dbManager->escapeString($item->Email)."',
-                      DateCreated = '".$this->dbManager->escapeString($item->DateCreated)."'
-                      AuthToken = '".$this->dbManager->escapeString($item->AuthToken)."'
-                  WHERE ID = ".$this->dbManager->escapeString($item->ID);
+            $query = "UPDATE $this->tableName SET ".
+                "Username = :Username, ".
+                "Password = :Password, ".
+                "Email = :Email, ".
+                "DateCreated = :DateCreated, ".
+                "AuthToken = :AuthToken ".
+                "WHERE ID = :ID";
 
-            $result = $this->dbManager->queryCustom($query);
-            $result->setFetchMode(PDO::FETCH_CLASS, 'User');
-            $fetch = $result->fetchAll();
-            return $fetch[0];
+            $stmt = $this->dbManager->GetConnection()->prepare($query);
+            $stmt->execute(array(
+                ':ID' => $item->ID,
+                ':Username' => $item->Username,
+                ':Password' => $item->Password,
+                ':Email' => $item->Password,
+                ':DateCreated' => $item->DateCreated,
+                ':AuthToken' => $item->AuthToken
+            ));
+            return true;
         }
         catch(PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
-        return array();
+        return false;
     }
 }
 ?>

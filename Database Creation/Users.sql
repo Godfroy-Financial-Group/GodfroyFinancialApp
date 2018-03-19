@@ -9,3 +9,5 @@ CREATE TABLE IF NOT EXISTS users (
 	DateCreated		DATETIME		NOT NULL,
 	AuthToken		TEXT			NOT NULL
 );
+
+SELECT * FROM users;

@@ -16,8 +16,8 @@ class DBGenericRepository
     public function delete(int $id) {
         try {
             if (empty($this->dbManager->GetConnection())) { return; }
-            $stmt = $this->dbManager->GetConnection()->prepare("DELETE FROM $this->tableName WHERE ID = :id");
-            $stmt->bindParam(':id', $id);
+            $stmt = $this->dbManager->GetConnection()->prepare("DELETE FROM $this->tableName WHERE ID = :ID");
+            $stmt->bindParam(':ID', $id);
             $stmt->execute();
         }
         catch(PDOException $e) {
