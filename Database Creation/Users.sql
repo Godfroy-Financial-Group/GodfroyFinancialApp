@@ -1,0 +1,11 @@
+CREATE SCHEMA IF NOT EXISTS GodfroyFinancialGroup;
+
+DROP TABLE IF EXISTS users;
+CREATE TABLE IF NOT EXISTS users (
+	ID				INT 			PRIMARY	KEY AUTO_INCREMENT,
+	Username		VARCHAR(255)	NOT NULL,
+    Password        VARCHAR(528)    NOT NULL,
+    Email			VARCHAR(255)	NOT NULL,	
+	DateCreated		DATETIME		NOT NULL,
+	AuthToken		TEXT			NOT NULL
+);

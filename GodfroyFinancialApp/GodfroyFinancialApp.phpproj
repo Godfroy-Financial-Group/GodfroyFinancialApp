@@ -1,0 +1,40 @@
+﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>GodfroyFinancialApp</Name>
+    <ProjectGuid>14be3fd9-0ae0-43f0-820f-04c12d2deaf3</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <ProjectTypeGuids>{A0786B88-2ADB-4C21-ABE8-AA2D79766269}</ProjectTypeGuids>
+    <AssemblyName>GodfroyFinancialApp</AssemblyName>
+    <Runtime>PHP</Runtime>
+    <RuntimeVersion>7.1</RuntimeVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <IncludeDebugInformation>true</IncludeDebugInformation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <IncludeDebugInformation>false</IncludeDebugInformation>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Common\DataAccess\DBGenericRepository.php" />
+    <Compile Include="Common\DataAccess\Repositories\DBNewsletterSubscriptionRepository.php" />
+    <Compile Include="Common\DataAccess\Repositories\DBTestimonyRepository.php" />
+    <Compile Include="Common\DataAccess\Repositories\DBUserRepository.php" />
+    <Compile Include="Common\IncludeAll.php" />
+    <Compile Include="Common\Models\NewsletterSubscription.php" />
+    <Compile Include="Common\Models\Testimony.php" />
+    <Compile Include="Common\Models\User.php" />
+    <Compile Include="Common\DataAccess\DBManager.php" />
+    <Compile Include="index.php" />
+    <Compile Include="Common\LocalSettings.php" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Common\" />
+    <Folder Include="Common\DataAccess\Repositories\" />
+    <Folder Include="Common\Models\" />
+    <Folder Include="Common\Services\" />
+    <Folder Include="Common\DataAccess\" />
+  </ItemGroup>
+</Project>

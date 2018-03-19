@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "GodfroyFinancialApp", "GodfroyFinancialApp\GodfroyFinancialApp.phpproj", "{14BE3FD9-0AE0-43F0-820F-04C12D2DEAF3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14BE3FD9-0AE0-43F0-820F-04C12D2DEAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14BE3FD9-0AE0-43F0-820F-04C12D2DEAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AC6FED33-7507-4A90-BA19-7EAC080DCD9B}
+	EndGlobalSection
+EndGlobal
