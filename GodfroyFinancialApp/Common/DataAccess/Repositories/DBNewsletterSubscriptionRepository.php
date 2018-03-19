@@ -29,42 +29,48 @@ class DBNewsletterSubscriptionRepository extends DBGenericRepository
         }
     }
 
-    public function insert(NewsletterSubscription $item) {
+    public function insert(NewsletterSubscription $item): bool {
         try {
-            $stmt = $this->dbManager->GetConnection()->prepare("INSERT INTO $this->tableName VALUES(:Name, :EmailAddress, :DateSubscriptionStarted)");
+            $query = "INSERT INTO $this->tableName (Name, EmailAddress, DateSubscriptionStarted) ".
+                    "VALUES(:Name, :EmailAddress, :Email, :DateSubscriptionStarted)";
+
+            $stmt = $this->dbManager->GetConnection()->prepare($query);
             $stmt->execute(array(
-              ':Name' => $item->Username,
-              ':EmailAddress' => $item->Password,
-              ':DateSubscriptionStarted' => $item->DateCreated,
+                ':Name' => $item->Username,
+                ':EmailAddress' => $item->Password,
+                ':DateSubscriptionStarted' => $item->Password,
             ));
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'NewsletterSubscription');
-            $fetch = $stmt->fetchAll();
-            return $fetch[0];
+            return true;
         }
         catch(PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
-        return array();
+        return false;
     }
 
-    public function update(NewsletterSubscription $item) {
+    public function update(NewsletterSubscription $item) : bool{
         try {
-            $query = "UPDATE $this->tableName
-                  SET Name = '".$this->dbManager->escapeString($item->Name)."',
-                      EmailAddress = '".$this->dbManager->escapeString($item->EmailAddress)."',
-                      DateSubscriptionStarted = '".$this->dbManager->escapeString($item->DateSubscriptionStarted)."'
-                  WHERE ID = ".$this->dbManager->escapeString($item->ID);
+            $query = "UPDATE $this->tableName SET ".
+                        "Name = :Name, ".
+                        "EmailAddress = :EmailAddress, ".
+                        "DateSubscriptionStarted = :DateSubscriptionStarted, ".
+                    "WHERE ID = :ID";
 
-            $result = $this->dbManager->queryCustom($query);
-            $result->setFetchMode(PDO::FETCH_CLASS, 'NewsletterSubscription');
-            $fetch = $result->fetchAll();
-            return $fetch[0];
+            $stmt = $this->dbManager->GetConnection()->prepare($query);
+            $stmt->execute(array(
+                  ':ID' => $item->ID,
+                  ':Name' => $item->Name,
+                  ':EmailAddress' => $item->Review,
+                  ':DateSubscriptionStarted' => $item->Timestamp,
+                ));
+            return true;
         }
         catch(PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
-        return array();
+        return false;
+
     }
 }
 ?>

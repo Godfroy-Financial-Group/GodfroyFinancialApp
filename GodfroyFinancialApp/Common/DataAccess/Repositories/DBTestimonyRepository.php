@@ -29,44 +29,50 @@ class DBTestimonyRepository extends DBGenericRepository
         }
     }
 
-    public function insert(Testimony $item) {
+    public function insert(Testimony $item) : bool {
         try {
-            $stmt = $this->dbManager->GetConnection()->prepare("INSERT INTO $this->tableName VALUES(:Name, :Review, :Timestamp, :Active)");
+            $query = "INSERT INTO $this->tableName (Name, Review, Timestamp, Active) ".
+                        "VALUES(:Name, :Review, :Timestamp, :Active)";
+
+            $stmt = $this->dbManager->GetConnection()->prepare($query);
             $stmt->execute(array(
               ':Name' => $item->Name,
               ':Review' => $item->Review,
               ':Timestamp' => $item->Timestamp,
               ':Active' => $item->Active
             ));
-
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Testimony');
-            $fetch = $stmt->fetchAll();
-            return $fetch[0];
+            return true;
         }
         catch(PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
-        return array();
+        return false;
     }
 
-    public function update(Testimony $item) {
+    public function update(Testimony $item) : bool{
         try {
-            $query = "UPDATE $this->tableName
-                  SET Name = '".$this->dbManager->escapeString($item->Name)."',
-                      Review = '".$this->dbManager->escapeString($item->Review)."',
-                      Timestamp = '".$this->dbManager->escapeString($item->Timestamp)."'
-                      Active = ".$this->dbManager->escapeString($item->Active)."
-                  WHERE ID = ".$this->dbManager->escapeString($item->ID);
+            $query = "UPDATE $this->tableName SET ".
+                        "Name = :Name, ".
+                        "Review = :Review, ".
+                        "Timestamp = :Timestamp, ".
+                        "Active = :Active, ".
+                    "WHERE ID = :ID";
 
-            $result = $this->dbManager->queryCustom($query);
-            $result->setFetchMode(PDO::FETCH_CLASS, 'Testimony');
-            $fetch = $result->fetchAll();
-            return $fetch[0];
+            $stmt = $this->dbManager->GetConnection()->prepare($query);
+            $stmt->execute(array(
+                  ':ID' => $item->ID,
+                  ':Name' => $item->Name,
+                  ':Review' => $item->Review,
+                  ':Timestamp' => $item->Timestamp,
+                  ':Active' => $item->Active
+                ));
+
+            return true;
         }
         catch(PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
-        return array();
+        return false;
     }
 }
 ?>
