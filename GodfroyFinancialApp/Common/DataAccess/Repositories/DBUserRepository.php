@@ -15,6 +15,7 @@ class DBUserRepository extends DBGenericRepository
         catch(PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
+        return array();
     }
 
     public function getID($key) : ?User {
@@ -29,10 +30,46 @@ class DBUserRepository extends DBGenericRepository
         }
     }
 
+    public function getUsername($username) : ?User {
+        try {
+            $result = $this->dbManager->queryByFilter($this->tableName, "Username", $this->dbManager->escapeString($username));
+            $result->setFetchMode(PDO::FETCH_CLASS, 'User');
+            $fetch = $result->fetchAll();
+            return $fetch[0];
+        }
+        catch(PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+
+    public function getEmail($email) : ?User {
+        try {
+            $result = $this->dbManager->queryByFilter($this->tableName, "Email", $this->dbManager->escapeString($email));
+            $result->setFetchMode(PDO::FETCH_CLASS, 'User');
+            $fetch = $result->fetchAll();
+            return $fetch[0];
+        }
+        catch(PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+
+    public function getAuthToken($username) : ?User {
+        try {
+            $result = $this->dbManager->queryByFilter($this->tableName, "AuthToken", $this->dbManager->escapeString($username));
+            $result->setFetchMode(PDO::FETCH_CLASS, 'User');
+            $fetch = $result->fetchAll();
+            return $fetch[0];
+        }
+        catch(PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+
     public function insert(User $item) {
         try {
-            $query = "INSERT INTO $this->tableName (Username, Password, Email, DateCreated, AuthToken) ".
-                "VALUES(:Username, :Password, :Email, :DateCreated, :AuthToken)";
+            $query = "INSERT INTO $this->tableName (Username, Password, Email, DateCreated, DateModified, AuthToken) ".
+                "VALUES(:Username, :Password, :Email, :DateCreated, :DateModified, :AuthToken)";
 
             $stmt = $this->dbManager->GetConnection()->prepare($query);
             $stmt->execute(array(
@@ -40,6 +77,7 @@ class DBUserRepository extends DBGenericRepository
                 ':Password' => $item->Password,
                 ':Email' => $item->Password,
                 ':DateCreated' => $item->DateCreated,
+                ':DateModified' => $item->DateModified,
                 ':AuthToken' => $item->AuthToken
             ));
 
@@ -59,6 +97,7 @@ class DBUserRepository extends DBGenericRepository
                 "Password = :Password, ".
                 "Email = :Email, ".
                 "DateCreated = :DateCreated, ".
+                "DateModified = :DateModified, ".
                 "AuthToken = :AuthToken ".
                 "WHERE ID = :ID";
 
@@ -69,6 +108,7 @@ class DBUserRepository extends DBGenericRepository
                 ':Password' => $item->Password,
                 ':Email' => $item->Password,
                 ':DateCreated' => $item->DateCreated,
+                ':DateModified' => $item->DateModified,
                 ':AuthToken' => $item->AuthToken
             ));
             return true;

@@ -1,4 +1,5 @@
 <?php
+
 class DBGenericRepository
 {
     public $dbManager;
@@ -7,10 +8,6 @@ class DBGenericRepository
     function __construct(DBManager $dbManager, $tableName) {
         $this->dbManager = $dbManager;
         $this->tableName = $tableName;
-    }
-
-    function getAll() {
-        return $this->dbManager->queryAll($this->tableName);
     }
 
     public function delete(int $id) {

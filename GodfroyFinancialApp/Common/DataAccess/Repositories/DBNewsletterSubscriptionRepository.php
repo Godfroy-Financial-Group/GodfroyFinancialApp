@@ -15,6 +15,7 @@ class DBNewsletterSubscriptionRepository extends DBGenericRepository
         catch(PDOException $e) {
             echo 'Error: ' . $e->getMessage();
         }
+        return array();
     }
 
     public function getID($key) : ?NewsletterSubscription {

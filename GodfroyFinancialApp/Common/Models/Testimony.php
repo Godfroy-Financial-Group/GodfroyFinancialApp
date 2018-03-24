@@ -16,12 +16,16 @@ class Testimony
     public $Timestamp;
     public $Active;
 
-    public function __construct(?int $id, string $name, string $review, $timestamp, bool $active) {
-        $this->ID = $id;
-        $this->Name = $name;
-        $this->Review = $review;
-        $this->Timestamp = $timestamp;
-        $this->Active = $active;
+    public function __construct() { }
+
+    public static function FromAll(?int $id, string $name, string $review, $timestamp, bool $active) : Testimony {
+        $testimony = new Testimony();
+        $testimony->ID = $id;
+        $testimony->Name = $name;
+        $testimony->Review = $review;
+        $testimony->Timestamp = $timestamp;
+        $testimony->Active = $active;
+        return $testimony;
     }
 
 }

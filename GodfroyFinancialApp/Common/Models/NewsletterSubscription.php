@@ -15,11 +15,15 @@ class NewsletterSubscription
     public $EmailAddress;
     public $DateSubscriptionStarted;
 
-    public function __construct(?int $id, string $name, string $emailAddress, $dateSubscriptionStarted) {
-        $this->ID = $id;
-        $this->Name = $name;
-        $this->EmailAddress = $emailAddress;
-        $this->DateSubscriptionStarted = $dateSubscriptionStarted;
+    public function __construct() { }
+
+    public static function FromAll(?int $id, string $name, string $emailAddress, $dateSubscriptionStarted) : NewsletterSubscription{
+        $newsletterSubscription = new NewsletterSubscription();
+        $newsletterSubscription->ID = $id;
+        $newsletterSubscription->Name = $name;
+        $newsletterSubscription->EmailAddress = $emailAddress;
+        $newsletterSubscription->DateSubscriptionStarted = $dateSubscriptionStarted;
+        return $newsletterSubscription;
     }
 }
 

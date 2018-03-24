@@ -27,6 +27,7 @@
     <Compile Include="Common\Models\Testimony.php" />
     <Compile Include="Common\Models\User.php" />
     <Compile Include="Common\DataAccess\DBManager.php" />
+    <Compile Include="Common\Services\AuthenticationService.php" />
     <Compile Include="index.php" />
     <Compile Include="Common\LocalSettings.php" />
   </ItemGroup>
@@ -36,5 +37,6 @@
     <Folder Include="Common\Models\" />
     <Folder Include="Common\Services\" />
     <Folder Include="Common\DataAccess\" />
+    <Folder Include="API\" />
   </ItemGroup>
 </Project>

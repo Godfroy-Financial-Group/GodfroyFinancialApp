@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     Password        VARCHAR(528)    NOT NULL,
     Email			VARCHAR(255)	NOT NULL,	
 	DateCreated		DATETIME		NOT NULL,
+	DateModified	DATETIME		NOT NULL,
 	AuthToken		TEXT			NOT NULL
 );
 
