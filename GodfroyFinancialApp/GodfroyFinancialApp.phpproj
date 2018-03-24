@@ -22,7 +22,11 @@
     <Compile Include="Common\DataAccess\Repositories\DBNewsletterSubscriptionRepository.php" />
     <Compile Include="Common\DataAccess\Repositories\DBTestimonyRepository.php" />
     <Compile Include="Common\DataAccess\Repositories\DBUserRepository.php" />
+    <Compile Include="Common\Footer.php" />
+    <Compile Include="Common\Header.php" />
     <Compile Include="Common\IncludeAll.php" />
+    <Compile Include="logout.php" />
+    <Compile Include="login.php" />
     <Compile Include="Common\Models\NewsletterSubscription.php" />
     <Compile Include="Common\Models\Testimony.php" />
     <Compile Include="Common\Models\User.php" />
@@ -35,8 +39,21 @@
     <Folder Include="Common\" />
     <Folder Include="Common\DataAccess\Repositories\" />
     <Folder Include="Common\Models\" />
+    <Folder Include="Content\" />
     <Folder Include="Common\Services\" />
     <Folder Include="Common\DataAccess\" />
     <Folder Include="API\" />
+    <Folder Include="Content\CSS\" />
+    <Folder Include="Content\Images\Logos\" />
+    <Folder Include="Content\JS\" />
+    <Folder Include="Content\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\CSS\Main.css" />
+    <Content Include="Content\Images\Logos\Black_Godfroy_Financial_Logo.png" />
+    <Content Include="Content\Images\Logos\Black_Godfroy_Financial_Logo_Resize.png" />
+    <Content Include="Content\Images\Logos\Godfroy_Financial_Logo.png" />
+    <Content Include="Content\Images\Logos\Godfroy_Financial_Logo_Resize.png" />
+    <Content Include="Content\JS\Site.js" />
   </ItemGroup>
 </Project>

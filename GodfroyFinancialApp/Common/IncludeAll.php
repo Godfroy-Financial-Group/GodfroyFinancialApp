@@ -1,6 +1,10 @@
 <?php
 // Include important pages here
 // ================================================================================
+if (empty($pageTitle)) {
+    $pageTitle = "";
+}
+
 $supportedImageTypes = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
 date_default_timezone_set("America/Toronto");
 
@@ -19,4 +23,11 @@ include_once("DataAccess/Repositories/DBUserRepository.php");
 include_once("DataAccess/Repositories/DBTestimonyRepository.php");
 include_once("DataAccess/Repositories/DBNewsletterSubscriptionRepository.php");
 
+// ================ Services ==============
+include_once("Services/AuthenticationService.php");
+
+
+// ================================================================================
+// Start the Session in the Header since the header is included in all the pages
+session_start();
 ?>

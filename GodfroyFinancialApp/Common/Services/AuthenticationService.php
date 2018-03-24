@@ -1,6 +1,4 @@
 <?php
-include_once("../IncludeAll.php");
-
 /**
  * AuthenticationService short summary.
  *
@@ -32,6 +30,21 @@ class AuthenticationService
 
         // If not, return null for a failed login
         return null;
+    }
+
+    public function VerifyLogin(string $username, string $password) : bool {
+        $user = $this->userRepo->getUsername($username);
+
+        // Check if a user with this username exists
+        if (empty($user) || $user == null) return false;
+
+        // Verify if the password is correct
+        if (User::VerifyPassword($password, $user->Password)) {
+            return true;
+        }
+
+        // If not, return null for a failed login
+        return false;
     }
 
     public function VerifyAuthToken(string $username, string $authToken) : bool {

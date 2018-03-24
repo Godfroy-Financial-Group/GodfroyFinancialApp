@@ -1,43 +1,38 @@
 <?php include_once("IncludeAll.php"); ?>
+<?php
+    if (empty($pageTitle)) { $formattedPageTitle = " - $pageTitle"; }
+    else { $formattedPageTitle = ""; }
+?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Algonquin Social Media Website - <?php echo $pageTitle; ?></title>
-    <link rel="stylesheet" href="Contents/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="Contents/AlgCss/Site.css" />
-    <link href="Contents/css/style.css" rel="stylesheet" />
-    <script type="text/javascript">
-    </script>
-    <script src="Scripts/jquery-2.2.4.min.js"></script>
-    <script src="Contents/js/bootstrap.min.js"></script>
+
+    <title>Godfroy Financial Group <?php echo $formattedPageTitle; ?></title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="Content/CSS/Main.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
-
-    <nav class="navbar navbar-inverse">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand no-padding horizontal-margin" href="#"><img src="./Contents/img/AC.png" /></a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="Index.php">Home</a></li>
-                    <li><a href="MyFriends.php">My Friends</a></li>
-                    <li><a href="MyAlbums.php">My Albums</a></li>
-                    <li><a href="MyPictures.php">My Pictures</a></li>
-                    <li><a href="UploadPictures.php">Upload Pictures</a></li>
-
-                    <?php if (empty($_SESSION["LoggedInUser"])) : ?>
-                    <li><a href="Login.php">Login</a></li>
-                    <?php else : ?>
-                    <li><a href="Logout.php">Logout</a></li>
-                    <?php endif; ?>
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <img class="navbar-brand" src="Content/Images/Logos/Godfroy_Financial_Logo_Resize.png" alt="logo">
+            <!--<a class="navbar-brand" href="#">Godfroy Financial Group</a>-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
                 </ul>
-            </div><!--/.nav-collapse -->
-        </div>
-    </nav>
+            </div>
+        </nav>
+    </header>
