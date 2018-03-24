@@ -20,14 +20,13 @@ body {
 
 /* Custom CSS */
 body > .container {
-    padding: 65px 15px 0;
+    padding: 80px 15px 0;
 }
 
 .footer > .container {
     padding-right: 15px;
     padding-left: 15px;
 }
-
 
 /* Branding */
 .navbar-brand {

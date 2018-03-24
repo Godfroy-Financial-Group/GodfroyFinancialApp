@@ -27,10 +27,26 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="index.php">Home</a>
                     </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="users.php">Users</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="testimonies.php">Testimonies</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="newslettersubscriptions.php">Newsletter Subscriptions</a>
+                    </li>
+                    <li class="divider"></li>
+                </ul>
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="logout.php">Logout</a>
+                        <?php if (isset($_SESSION["LoggedInUser"])): ?>
+                            <a class="nav-link" href="logout.php">Logout</a>
+                        <?php else: ?>
+                            <a class="nav-link" href="login.php">Login</a>
+                        <?php endif; ?>
                     </li>
                 </ul>
             </div>

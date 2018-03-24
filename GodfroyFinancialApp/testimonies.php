@@ -6,7 +6,7 @@ $LoggedInUser = isset($_SESSION["LoggedInUser"])?$_SESSION["LoggedInUser"]:(func
 ?>
 
 <main role="main" class="container">
-    <h1>Home</h1>
+    <h1>Testimonies</h1>
 </main>
 
 <?php include_once("Common/Footer.php"); ?>

@@ -59,6 +59,9 @@ if ($_POST) {
                 </label>
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <?php if (LocalSettings::$userCreationEnabled) :?>
+                <a href="createuser.php">Need an account? Sign up.</a>
+            <?php endif;?>
         </form>
     </div>
 </main>

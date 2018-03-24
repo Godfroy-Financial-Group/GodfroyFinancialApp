@@ -25,6 +25,10 @@
     <Compile Include="Common\Footer.php" />
     <Compile Include="Common\Header.php" />
     <Compile Include="Common\IncludeAll.php" />
+    <Compile Include="createuser.php" />
+    <Compile Include="newslettersubscriptions.php" />
+    <Compile Include="testimonies.php" />
+    <Compile Include="users.php" />
     <Compile Include="logout.php" />
     <Compile Include="login.php" />
     <Compile Include="Common\Models\NewsletterSubscription.php" />
