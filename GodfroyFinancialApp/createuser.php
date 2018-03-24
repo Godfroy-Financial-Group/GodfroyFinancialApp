@@ -69,7 +69,7 @@ if ($_POST) {
             <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" required autofocus />
 
             <label for="inputEmail" class="sr-only">Email</label>
-            <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email Address" required autofocus />
+            <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email Address" required />
 
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required />
