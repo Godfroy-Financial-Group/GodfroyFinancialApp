@@ -1,5 +1,7 @@
 <?php include_once("Common/IncludeAll.php"); ?>
 <?php
+if (isset($_SESSION["LoggedInUser"])) header("Location: index.php");
+
 $loginError = false;
 
 if (isset($_GET['returnUrl'])) {

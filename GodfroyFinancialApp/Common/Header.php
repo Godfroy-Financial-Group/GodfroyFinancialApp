@@ -43,13 +43,19 @@
                     <li class="divider"></li>
                 </ul>
                 <ul class="navbar-nav">
+                    <?php if (isset($_SESSION["LoggedInUser"])): ?>
                     <li class="nav-item">
-                        <?php if (isset($_SESSION["LoggedInUser"])): ?>
-                            <a class="nav-link" href="logout.php">Logout</a>
-                        <?php else: ?>
-                            <a class="nav-link" href="login.php">Login</a>
-                        <?php endif; ?>
+                        <a class="nav-link" href="edituser.php?userid=<?php echo $_SESSION["LoggedInUser"]->ID?>"><?php echo $_SESSION["LoggedInUser"]->Username?></a>
                     </li>
+                    <li class="divider"></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.php">Logout</a>
+                    </li>
+                    <?php else: ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="login.php">Login</a>
+                    </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </nav>

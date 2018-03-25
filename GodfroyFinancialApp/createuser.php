@@ -43,7 +43,8 @@ if ($_POST) {
             // Redirect to the proper page
             //ob_end_clean( ); // Run this if the Redirect doesn't work
 
-            header("Location: login.php");
+            if (!isset($_SESSION["LoggedInUser"])) header("Location: login.php");
+            else header("Location: users.php");
             die();
         }
     }

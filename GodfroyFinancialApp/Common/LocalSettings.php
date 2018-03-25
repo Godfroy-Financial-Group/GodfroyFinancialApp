@@ -11,7 +11,7 @@ class LocalSettings
     public static $db_Port = 3306;
 
     // App Information
-    public static $publicUserCreationEnabled = true;
+    public static $publicUserCreationEnabled = false;
     public static $adminUserCreationEnabled = true;
 
     public function __construct() { }
