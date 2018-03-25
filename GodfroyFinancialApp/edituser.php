@@ -112,7 +112,7 @@ if ($_POST) {
             <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email Address" value="<?php echo $user->Email; ?>" required />
 
             <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputNewPassword" name="inputNewPassword" class="form-control" placeholder="New Password" value="<?php echo $newpassword; ?>"/ />
+            <input type="password" id="inputNewPassword" name="inputNewPassword" class="form-control" placeholder="New Password" value="<?php echo $newpassword; ?>" />
 
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" name="inputCurrentPassword" class="form-control" placeholder="Current Password" value="<?php echo $currentpassword; ?>" required />
