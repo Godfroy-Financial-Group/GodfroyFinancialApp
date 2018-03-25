@@ -27,7 +27,7 @@ $newsletterSubscriptions = $newsletterSubscriptionRepo->getAll();
     <hr />
     <h2>Quick Actions</h2>
     <hr />
-
+    <h2>Active Subscriptions</h2>
     <form action="newslettersubscriptions.php" method="post">
         <table class="table table-striped">
             <thead class="thead-dark">

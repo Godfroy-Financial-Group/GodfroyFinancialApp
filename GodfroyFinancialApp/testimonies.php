@@ -51,7 +51,6 @@ $testimonies = $testimonyRepo->getAll();
 
     <form action="testimonies.php" method="post">
         <h2>Approved Testimonies</h2>
-        <hr />
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -101,7 +100,6 @@ $testimonies = $testimonyRepo->getAll();
         </table>
         <hr />
         <h2>Unapproved Testimonies</h2>
-        <hr />
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
