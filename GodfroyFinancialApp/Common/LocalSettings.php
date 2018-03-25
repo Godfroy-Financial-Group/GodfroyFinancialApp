@@ -14,6 +14,10 @@ class LocalSettings
     public static $publicUserCreationEnabled = false;
     public static $adminUserCreationEnabled = true;
 
+    // API Keys
+    public static $MailChimpAPIKey = "";
+    public static $MailChimpListID = "";
+
     public function __construct() { }
 }
 

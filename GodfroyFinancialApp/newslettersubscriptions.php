@@ -1,13 +1,14 @@
 <?php $pageTitle = "Newsletter Subscriptions"; include_once("Common/Header.php"); ?>
+<?php include_once("Vendor/mailchimp-api/MailChimp.php"); ?>
 <?php
 
 // If user is logged in, assign User object to $LoggedInUser, otherwise redirect to login and die (self-executing function)
 $LoggedInUser = isset($_SESSION["LoggedInUser"])?$_SESSION["LoggedInUser"]:(function(){header("Location: login.php?returnUrl=".urlencode($_SERVER['REQUEST_URI']));die();})();
 
-// Create the DB Managers
-$dbManager = new DBManager();
-$dbManager->connect();
-$newsletterSubscriptionRepo = new DBNewsletterSubscriptionRepository($dbManager);
+// Setup Mailchimp MailChimp to get Subscriptions
+use \DrewM\MailChimp\MailChimp;
+$mailChimp = new MailChimp(LocalSettings::$MailChimpAPIKey);
+$mailChimpListID = LocalSettings::$MailChimpListID;
 
 if ($_POST) {
     $deletionError = "";
@@ -18,7 +19,7 @@ if ($_POST) {
     $email = $_POST["inputEmail"];
 
     if (!empty($delete)) {
-        $newsletterSubscriptionRepo->delete($delete);
+        $mailChimp->delete("lists/$mailChimpListID/members/$delete");
     }
 
     if (!empty($subscribe)) {
@@ -27,8 +28,22 @@ if ($_POST) {
         if (empty($name)) { $nameValidationError = "Please enter a username"; }
         if (empty($email)) { $emailValidationError = "Please enter an email"; }
         if (empty($nameValidationError) && empty($emailValidationError)) {
-            $newsletterSubscription = NewsletterSubscription::FromAll(null, $name, $email, date('Y-m-d'));
-            $newsletterSubscriptionRepo->insert($newsletterSubscription);
+            $namesArray = explode(" ", $name);
+            $firstName = array_shift($namesArray);
+            $lastName = join(" ", $namesArray);
+            if (empty($lastName)) { $lastName = "No Last Name"; }
+
+            $result = $mailChimp->post("lists/$mailChimpListID/members", [
+				'email_address' => $email,
+				'status'        => 'subscribed',
+                'merge_fields'  => [
+                                    'FNAME' => $firstName,
+                                    'LNAME' => $lastName
+                                   ]
+			]);
+
+            //$newsletterSubscription = NewsletterSubscription::FromAll(null, $name, $email, date('Y-m-d'));
+            //$newsletterSubscriptionRepo->insert($newsletterSubscription);
             $name = "";
             $email = "";
         }
@@ -37,7 +52,19 @@ if ($_POST) {
 }
 
 // Get all the Testimonies
-$newsletterSubscriptions = $newsletterSubscriptionRepo->getAll();
+$newsletterSubscriptions = array();
+$results = $mailChimp->get("lists/$mailChimpListID/members");
+foreach ($results["members"] as $value)
+{
+    $subscription = new NewsletterSubscription();
+    $subscription->ID = $value["id"];
+    $subscription->Name = $value["merge_fields"]["FNAME"]." ".$value["merge_fields"]["LNAME"];
+    $subscription->EmailAddress = $value["email_address"];
+    $subscription->DateSubscriptionStarted = date("Y-m-d H:i:s", strtotime($value["last_changed"]));
+    array_push($newsletterSubscriptions, $subscription);
+}
+
+//$newsletterSubscriptions = $newsletterSubscriptionRepo->getAll();
 ?>
 
 <main role="main" class="container">

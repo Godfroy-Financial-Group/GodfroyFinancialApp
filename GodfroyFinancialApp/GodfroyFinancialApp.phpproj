@@ -41,6 +41,9 @@
     <Compile Include="Common\Services\AuthenticationService.php" />
     <Compile Include="index.php" />
     <Compile Include="Common\LocalSettings.php" />
+    <Compile Include="Vendor\mailchimp-api\Batch.php" />
+    <Compile Include="Vendor\mailchimp-api\MailChimp.php" />
+    <Compile Include="Vendor\mailchimp-api\Webhook.php" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
@@ -54,6 +57,8 @@
     <Folder Include="Content\Images\Logos\" />
     <Folder Include="Content\JS\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="Vendor\" />
+    <Folder Include="Vendor\mailchimp-api\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CSS\Main.css" />
@@ -62,5 +67,7 @@
     <Content Include="Content\Images\Logos\Godfroy_Financial_Logo.png" />
     <Content Include="Content\Images\Logos\Godfroy_Financial_Logo_Resize.png" />
     <Content Include="Content\JS\Site.js" />
+    <Content Include="Vendor\mailchimp-api\LICENSE" />
+    <Content Include="Vendor\mailchimp-api\README.md" />
   </ItemGroup>
 </Project>
