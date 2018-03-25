@@ -32,15 +32,16 @@ class DBTestimonyRepository extends DBGenericRepository
 
     public function insert(Testimony $item) : bool {
         try {
-            $query = "INSERT INTO $this->tableName (Name, Review, Timestamp, Active) ".
-                        "VALUES(:Name, :Review, :Timestamp, :Active)";
+            $query = "INSERT INTO $this->tableName (Name, Review, Timestamp, Active, Approved) ".
+                        "VALUES(:Name, :Review, :Timestamp, :Active, :Approved)";
 
             $stmt = $this->dbManager->GetConnection()->prepare($query);
             $stmt->execute(array(
               ':Name' => $item->Name,
               ':Review' => $item->Review,
               ':Timestamp' => $item->Timestamp,
-              ':Active' => $item->Active
+              ':Active' => (int)$item->Active,
+              ':Approved' => (int)$item->Approved
             ));
             return true;
         }
@@ -57,6 +58,7 @@ class DBTestimonyRepository extends DBGenericRepository
                         "Review = :Review, ".
                         "Timestamp = :Timestamp, ".
                         "Active = :Active, ".
+                        "Approved = :Approved ".
                     "WHERE ID = :ID";
 
             $stmt = $this->dbManager->GetConnection()->prepare($query);
@@ -65,7 +67,8 @@ class DBTestimonyRepository extends DBGenericRepository
                   ':Name' => $item->Name,
                   ':Review' => $item->Review,
                   ':Timestamp' => $item->Timestamp,
-                  ':Active' => $item->Active
+                  ':Active' => (int)$item->Active,
+                  ':Approved' => (int)$item->Approved
                 ));
 
             return true;

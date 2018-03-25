@@ -15,16 +15,18 @@ class Testimony
     public $Review;
     public $Timestamp;
     public $Active;
+    public $Approved;
 
     public function __construct() { }
 
-    public static function FromAll(?int $id, string $name, string $review, $timestamp, bool $active) : Testimony {
+    public static function FromAll(?int $id, string $name, string $review, $timestamp, bool $active, bool $approved) : Testimony {
         $testimony = new Testimony();
         $testimony->ID = $id;
         $testimony->Name = $name;
         $testimony->Review = $review;
         $testimony->Timestamp = $timestamp;
         $testimony->Active = $active;
+        $testimony->Approved = $approved;
         return $testimony;
     }
 

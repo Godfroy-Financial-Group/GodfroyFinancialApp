@@ -6,5 +6,8 @@ CREATE TABLE IF NOT EXISTS testimonies (
 	Name			VARCHAR(255)	NOT NULL,
 	Review			TEXT			NOT NULL,
     Timestamp		DATE			NOT NULL,
-    Active			BOOLEAN			NOT NULL
+    Active			BOOLEAN			NOT NULL,
+	Approved		BOOLEAN			NOT NULL
 );
+
+SELECT * FROM testimonies;
