@@ -42,8 +42,6 @@ if ($_POST) {
                                    ]
 			]);
 
-            //$newsletterSubscription = NewsletterSubscription::FromAll(null, $name, $email, date('Y-m-d'));
-            //$newsletterSubscriptionRepo->insert($newsletterSubscription);
             $name = "";
             $email = "";
         }
