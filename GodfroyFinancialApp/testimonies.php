@@ -16,7 +16,7 @@ if ($_POST) {
     $activate = $_POST["activateItem"];
     $deactivate = $_POST["deactivateItem"];
 
-    $subscribe = $_POST["submitReview"];
+    $submitReview = $_POST["submitReview"];
     $name = $_POST["inputName"];
     $review = $_POST["inputReview"];
 
@@ -42,10 +42,10 @@ if ($_POST) {
         $testimonyRepo->update($testimony);
     }
 
-    if (!empty($subscribe)) {
+    if (!empty($submitReview)) {
         $nameValidationError = "";
         $reviewValidationError = "";
-        if (empty($name)) { $nameValidationError = "Please enter a username"; }
+        if (empty($name)) { $nameValidationError = "Please enter a name"; }
         if (empty($review)) { $reviewValidationError = "Please enter a review"; }
         if (empty($nameValidationError) && empty($reviewValidationError)) {
             $testimony = Testimony::FromAll(null, $name, $review, date('Y-m-d'), false, true);
@@ -128,7 +128,7 @@ $testimonies = $testimonyRepo->getAll();
                     </th>
                     <th>
                         <label for="inputReview" class="sr-only">Email</label>
-                        <input type="text" id="inputReview" name="inputReview" class="form-control" placeholder="Review" value="<?php echo $review; ?>" />
+                        <textarea id="inputReview" cols="40" rows="3" name="inputReview" class="form-control" placeholder="Review"><?php echo $review; ?></textarea>
                     </th>
                     <th></th>
                     <th>

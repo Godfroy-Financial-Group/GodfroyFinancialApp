@@ -23,32 +23,43 @@ class UserCreationService
         return false;
     }
 
+    private $validationError = "";
+    public function GetValidationError() { return $this->validationError; }
+
     public function ValidateUsernameFormat($username) : bool {
-        if (preg_match('/^[a-zA-Z0-9\s\_\-\.\!]*', $username)) return false;
-        return true;
+        if(preg_match('/^\w{5,}$/', $username)) { // \w equals "[0-9A-Za-z_]"
+            // valid username, alphanumeric & longer than or equals 5 chars
+            return true;
+        }
+
+        $this->validationError = "Username must be greater than or equal to 5 characters and can only contain alphanumeric characters and underscore";
+        return false;
     }
     public function ValidateEmailFormat($email) : bool {
-        if (preg_match('/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$', $email)) return false;
-        return true;
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            //$emailErr = "Valid email format";
+            return true;
+        }
+
+        $this->validationError = "The email address you entered is invalid";
+        return false;
     }
     public function ValidatePasswordFormat($password) : bool {
-        if (strlen($password) < 6) return false;
-        //if (preg_match_all('/[0-9]*', $password)) {
-        //    if (preg_match_all('/[a-zA-Z]*', $password)) {
-        //        if (preg_match_all('/[.!@#$%^&*\-\+=]*', $password)) {
-        //            return true;
-        //        }
-        //    }
-        //}
+        if (strlen($password) < 6) {
+            $this->validationError = "The password you entered is less than 6 characters long";
+            return false;
+        }
         return true;
     }
 
     public function ValidateUsernameDuplicate($username) : bool {
         if (empty($this->userRepo->getUsername($username))) return true;
+        $this->validationError = "A user with this username already exists";
         return false;
     }
     public function ValidateEmailDuplicate($email) : bool {
         if (empty($this->userRepo->getEmail($email))) return true;
+        $this->validationError = "A user with this email already exists";
         return false;
     }
 

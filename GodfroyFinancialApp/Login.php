@@ -8,6 +8,8 @@ if (isset($_GET['returnUrl'])) {
     $_SESSION['returnUrl'] = urldecode($_GET['returnUrl']);
 }
 
+$authenticationService = new AuthenticationService();
+
 if ($_POST) {
     $username = $_POST["inputUsername"];
     $password = $_POST["inputPassword"];
@@ -16,7 +18,6 @@ if ($_POST) {
     // Default the Login Error
     $loginError = true;
 
-    $authenticationService = new AuthenticationService();
     $safeUser = $authenticationService->Login($username, $password);
     if (!empty($safeUser)) {
         $loginError = false;
@@ -44,12 +45,12 @@ if ($_POST) {
 
 <main role="main" class="container">
     <div class="text-center">
-        <form class="form-signin" method="post" action="login.php">
+        <form class="form-centered form-login" method="post" action="login.php">
             <img class="mb-4" src="Content/Images/Logos/Black_Godfroy_Financial_Logo.png" alt="logo" width="300" />
 
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             <?php if($loginError): ?>
-                <p class="alert alert-danger" role="alert">Incorrect Username and/or Password</p>
+            <p class="alert alert-danger" role="alert"><?php echo $authenticationService->GetValidationError(); ?></p>
             <?php endif; ?>
             <label for="inputUsername" class="sr-only">Username</label>
             <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" value="<?php echo $username; ?>" required autofocus />
@@ -62,7 +63,7 @@ if ($_POST) {
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             <?php if (LocalSettings::$publicUserCreationEnabled) :?>
-                <a href="createuser.php">Need an account? Sign up.</a>
+            <a href="createuser.php">Need an account? Sign up.</a>
             <?php endif;?>
         </form>
     </div>

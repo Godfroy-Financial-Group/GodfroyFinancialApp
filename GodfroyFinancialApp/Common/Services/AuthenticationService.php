@@ -17,11 +17,16 @@ class AuthenticationService
         $this->userRepo = new DBUserRepository($this->dbManager);
     }
 
+    private $validationError = "";
+    public function GetValidationError() { return $this->validationError; }
+    private function SetLoginError() { $this->validationError = "Incorrect Username and/or Password"; }
+    private function SetAuthTokenError() { $this->validationError = "The authtoken you supplied is incorrect"; }
+
     public function Login(string $username, string $password) : ?SafeUser {
         $user = $this->userRepo->getUsername($username);
 
         // Check if a user with this username exists
-        if (empty($user) || $user == null) return null;
+        if (empty($user) || $user == null) { $this->SetLoginError(); return null; }
 
         // Verify if the password is correct
         if (User::VerifyPassword($password, $user->Password)) {
@@ -29,6 +34,7 @@ class AuthenticationService
         }
 
         // If not, return null for a failed login
+        $this->SetLoginError();
         return null;
     }
 
@@ -36,7 +42,7 @@ class AuthenticationService
         $user = $this->userRepo->getUsername($username);
 
         // Check if a user with this username exists
-        if (empty($user) || $user == null) return false;
+        if (empty($user) || $user == null) { $this->SetLoginError(); return false; }
 
         // Verify if the password is correct
         if (User::VerifyPassword($password, $user->Password)) {
@@ -44,14 +50,16 @@ class AuthenticationService
         }
 
         // If not, return null for a failed login
+        $this->SetLoginError();
         return false;
     }
 
     public function VerifyAuthToken(string $username, string $authToken) : bool {
         $user = $this->userRepo->getUsername($username);
-        if (empty($user) || $user == null) return false;
+        if (empty($user) || $user == null) { $this->SetAuthTokenError(); return false; }
 
         if ($user->AuthToken == $authToken) return true;
+        $this->SetAuthTokenError();
         return false;
     }
 }

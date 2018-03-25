@@ -11,6 +11,13 @@ $dbManager->connect();
 
 $userID = $_GET["userid"];
 $user = $userRepo->getID($userID);
+if (empty($user)) {
+    header("Location: users.php");
+    die();
+}
+
+$username = $user->Username;
+$email = $user->Email;
 
 if ($_POST) {
     $username = $_POST["inputUsername"];
@@ -23,27 +30,27 @@ if ($_POST) {
 
     // Validate the inputs
     if (!$userCreationService->ValidateUsernameFormat($username)) {
-        $usernameValidationError = "Username can only contain a-zA-Z0-9_-.! space";
+        $usernameValidationError = $userCreationService->GetValidationError();
     }
     else if ($user->Username != $username) {
         if (!$userCreationService->ValidateUsernameDuplicate($username)) {
-            $usernameValidationError = "A user with this name already exists";
+            $usernameValidationError = $userCreationService->GetValidationError();
         }
     }
 
     if (!$userCreationService->ValidateEmailFormat($email)) {
-        $emailValidationError = "Email is invalid";
+        $emailValidationError = $userCreationService->GetValidationError();
     }
     else if ($user->Email != $email) {
         if (!$userCreationService->ValidateEmailDuplicate($email)) {
-            $emailValidationError = "A user with this email already exists";
+            $emailValidationError = $userCreationService->GetValidationError();
         }
     }
 
     if ($authenticationService->VerifyLogin($user->Username, $currentpassword)) {
         if (!empty($newpassword)) {
             if(!$userCreationService->ValidatePasswordFormat($newpassword)) {
-                $passwordValidationError = "The password does not meet the requirements";
+                $passwordValidationError = $userCreationService->GetValidationError();
             }
         }
     }
@@ -72,7 +79,7 @@ if ($_POST) {
 
 <main role="main" class="container">
     <div class="text-center">
-        <form class="form-signin" method="post" action="edituser.php?userid=<?php echo $userID ?>">
+        <form class="form-centered form-edituser" method="post" action="edituser.php?userid=<?php echo $userID ?>">
             <img class="mb-4" src="Content/Images/Logos/Black_Godfroy_Financial_Logo.png" alt="logo" width="300" />
 
             <h1 class="h3 mb-3 font-weight-normal">Edit User</h1>
@@ -106,16 +113,16 @@ if ($_POST) {
             </p>
 
             <label for="inputUsername" class="sr-only">Username</label>
-            <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" value="<?php echo $user->Username; ?>" required autofocus />
+            <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" value="<?php echo $username; ?>" required autofocus />
 
             <label for="inputEmail" class="sr-only">Email</label>
-            <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email Address" value="<?php echo $user->Email; ?>" required />
+            <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email Address" value="<?php echo $email; ?>" required />
 
             <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputNewPassword" name="inputNewPassword" class="form-control" placeholder="New Password" value="<?php echo $newpassword; ?>" />
+            <input type="password" id="inputNewPassword" name="inputNewPassword" class="form-control" placeholder="New Password" value="" />
 
             <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" name="inputCurrentPassword" class="form-control" placeholder="Current Password" value="<?php echo $currentpassword; ?>" required />
+            <input type="password" id="inputPassword" name="inputCurrentPassword" class="form-control" placeholder="Current Password" value="" required />
 
             <hr />
             <p>Password must be atleast 6 characters and can contain letters, numbers and symbols.</p>

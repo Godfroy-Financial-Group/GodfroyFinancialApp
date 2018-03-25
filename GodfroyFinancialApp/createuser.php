@@ -5,26 +5,30 @@ if ($_POST) {
     $username = $_POST["inputUsername"];
     $email = $_POST["inputEmail"];
     $password = $_POST["inputPassword"];
+    $confirmPassword = $_POST["inputConfirmPassword"];
 
     $userCreationService = new UserCreationService();
 
     // Validate the inputs
     if (!$userCreationService->ValidateUsernameFormat($username)) {
-        $usernameValidationError = "Username can only contain a-zA-Z0-9_-.! space";
+        $usernameValidationError = $userCreationService->GetValidationError();
     }
     else if (!$userCreationService->ValidateUsernameDuplicate($username)) {
-        $usernameValidationError = "A user with this name already exists";
+        $usernameValidationError = $userCreationService->GetValidationError();
     }
 
     if (!$userCreationService->ValidateEmailFormat($email)) {
-        $emailValidationError = "Email is invalid";
+        $emailValidationError = $userCreationService->GetValidationError();
     }
     else if (!$userCreationService->ValidateEmailDuplicate($email)) {
-        $emailValidationError = "A user with this email already exists";
+        $emailValidationError = $userCreationService->GetValidationError();
     }
 
     if(!$userCreationService->ValidatePasswordFormat($password)) {
-        $passwordValidationError = "The password does not meet the requirements";
+        $passwordValidationError = $userCreationService->GetValidationError();
+    }
+    else if ($password != $confirmPassword) {
+        $passwordValidationError = "The passwords you have entered in do not match";
     }
 
     // Create the DB Managers
@@ -55,7 +59,7 @@ if ($_POST) {
 
 <main role="main" class="container">
     <div class="text-center">
-        <form class="form-signin" method="post" action="createuser.php">
+        <form class="form-centered form-createuser" method="post" action="createuser.php">
             <img class="mb-4" src="Content/Images/Logos/Black_Godfroy_Financial_Logo.png" alt="logo" width="300" />
 
             <h1 class="h3 mb-3 font-weight-normal">User Creation</h1>
@@ -64,13 +68,19 @@ if ($_POST) {
             <?php endif; ?>
 
             <?php if(!empty($usernameValidationError)): ?>
-            <p class="alert alert-danger" role="alert"><?php echo $usernameValidationError; ?></p>
+            <p class="alert alert-danger" role="alert">
+                <?php echo $usernameValidationError; ?>
+            </p>
             <?php endif; ?>
             <?php if(!empty($emailValidationError)): ?>
-            <p class="alert alert-danger" role="alert"><?php echo $emailValidationError; ?></p>
+            <p class="alert alert-danger" role="alert">
+                <?php echo $emailValidationError; ?>
+            </p>
             <?php endif; ?>
             <?php if(!empty($passwordValidationError)): ?>
-            <p class="alert alert-danger" role="alert"><?php echo $passwordValidationError; ?></p>
+            <p class="alert alert-danger" role="alert">
+                <?php echo $passwordValidationError; ?>
+            </p>
             <?php endif; ?>
 
             <label for="inputUsername" class="sr-only">Username</label>
@@ -82,7 +92,10 @@ if ($_POST) {
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" value="<?php echo $password; ?>" required />
 
-            <hr/>
+            <label for="inputConfirmPassword" class="sr-only">Password</label>
+            <input type="password" id="inputConfirmPassword" name="inputConfirmPassword" class="form-control" placeholder="Confirm Password" value="" required />
+
+            <hr />
             <p>Password must be atleast 6 characters and can contain letters, numbers and symbols.</p>
             <hr />
 

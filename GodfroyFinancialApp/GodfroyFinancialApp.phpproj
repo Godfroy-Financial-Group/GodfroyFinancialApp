@@ -29,6 +29,7 @@
     <Compile Include="edituser.php" />
     <Compile Include="createuser.php" />
     <Compile Include="newslettersubscriptions.php" />
+    <Compile Include="edittestimony.php" />
     <Compile Include="testimonies.php" />
     <Compile Include="users.php" />
     <Compile Include="logout.php" />

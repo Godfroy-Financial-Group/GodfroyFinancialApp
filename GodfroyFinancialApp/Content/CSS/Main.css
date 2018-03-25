@@ -20,7 +20,7 @@ body {
 
 /* Custom CSS */
 body > .container {
-    padding: 80px 15px 0;
+    padding: 100px 15px 0;
 }
 
 .footer > .container {
@@ -35,19 +35,19 @@ body > .container {
     margin-top: 0px;
 }
 
-/* Sign in Form */
-.form-signin {
+/* Centered Form */
+.form-centered {
     width: 100%;
-    max-width: 330px;
+    max-width: 400px;
     padding: 15px;
     margin: 0 auto;
 }
 
-    .form-signin .checkbox {
+    .form-centered .checkbox {
         font-weight: 400;
     }
 
-    .form-signin .form-control {
+    .form-centered .form-control {
         position: relative;
         box-sizing: border-box;
         height: auto;
@@ -55,17 +55,17 @@ body > .container {
         font-size: 16px;
     }
 
-        .form-signin .form-control:focus {
+        .form-centered .form-control:focus {
             z-index: 2;
         }
 
-    .form-signin input[type="email"] {
+    .form-centered input[type="email"] {
         margin-bottom: -1px;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
     }
 
-    .form-signin input[type="password"] {
+    .form-centered input[type="password"] {
         margin-bottom: 10px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
