@@ -8,7 +8,7 @@ $LoggedInUser = isset($_SESSION["LoggedInUser"])?$_SESSION["LoggedInUser"]:(func
 <main role="main" class="container">
     <h1>Home</h1>
     <hr />
-
+    <p>Welcome Back, <?php echo $LoggedInUser->Username; ?></p>
 </main>
 
 <?php include_once("Common/Footer.php"); ?>

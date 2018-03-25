@@ -7,3 +7,5 @@ CREATE TABLE IF NOT EXISTS newsletter_subscriptions (
 	EmailAddress 				VARCHAR(255) 	NOT NULL,
 	DateSubscriptionStarted		DATE			NOT NULL
 );
+
+SELECT * FROM newsletter_subscriptions;

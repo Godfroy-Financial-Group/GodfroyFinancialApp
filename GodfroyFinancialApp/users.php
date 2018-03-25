@@ -1,4 +1,4 @@
-<?php $pageTitle = "Home"; include_once("Common/Header.php"); ?>
+<?php $pageTitle = "Users"; include_once("Common/Header.php"); ?>
 <?php
 
 // If user is logged in, assign User object to $LoggedInUser, otherwise redirect to login and die (self-executing function)
@@ -29,6 +29,10 @@ $users = $userRepo->getAll();
 <main role="main" class="container">
     <h1>Users</h1>
     <hr />
+    <h2>Quick Actions</h2>
+    <a href="createuser.php" class="btn btn-primary">Create User</a>
+    <hr />
+
 
     <?php if(!empty($deletionError)): ?>
     <p class="alert alert-danger" role="alert">
@@ -82,10 +86,6 @@ $users = $userRepo->getAll();
             </tbody>
         </table>
     </form>
-    <hr />
-    <h2>Quick Actions</h2>
-    <a href="createuser.php" class="btn btn-primary">Create User</a>
-    <hr />
 </main>
 
 <?php include_once("Common/Footer.php"); ?>

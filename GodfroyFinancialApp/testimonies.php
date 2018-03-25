@@ -1,9 +1,10 @@
-<?php $pageTitle = "Home"; include_once("Common/Header.php"); ?>
+<?php $pageTitle = "Testimonies"; include_once("Common/Header.php"); ?>
 <?php
 
 // If user is logged in, assign User object to $LoggedInUser, otherwise redirect to login and die (self-executing function)
 $LoggedInUser = isset($_SESSION["LoggedInUser"])?$_SESSION["LoggedInUser"]:(function(){header("Location: login.php?returnUrl=".urlencode($_SERVER['REQUEST_URI']));die();})();
 
+// Create the DB Managers
 $dbManager = new DBManager();
 $dbManager->connect();
 $testimonyRepo = new DBTestimonyRepository($dbManager);
@@ -44,8 +45,11 @@ $testimonies = $testimonyRepo->getAll();
 
 <main role="main" class="container">
     <h1>Testimonies</h1>
+    <hr />
+    <h2>Quick Actions</h2>
+    <hr />
+
     <form action="testimonies.php" method="post">
-        <hr />
         <h2>Approved Testimonies</h2>
         <hr />
         <table class="table table-striped">
