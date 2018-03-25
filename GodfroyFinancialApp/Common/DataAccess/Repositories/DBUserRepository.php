@@ -75,7 +75,7 @@ class DBUserRepository extends DBGenericRepository
             $stmt->execute(array(
                 ':Username' => $item->Username,
                 ':Password' => $item->Password,
-                ':Email' => $item->Password,
+                ':Email' => $item->Email,
                 ':DateCreated' => $item->DateCreated,
                 ':DateModified' => $item->DateModified,
                 ':AuthToken' => $item->AuthToken
@@ -106,7 +106,7 @@ class DBUserRepository extends DBGenericRepository
                 ':ID' => $item->ID,
                 ':Username' => $item->Username,
                 ':Password' => $item->Password,
-                ':Email' => $item->Password,
+                ':Email' => $item->Email,
                 ':DateCreated' => $item->DateCreated,
                 ':DateModified' => $item->DateModified,
                 ':AuthToken' => $item->AuthToken

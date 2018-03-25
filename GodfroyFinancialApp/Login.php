@@ -50,16 +50,16 @@ if ($_POST) {
                 <p class="alert alert-danger" role="alert">Incorrect Username and/or Password</p>
             <?php endif; ?>
             <label for="inputUsername" class="sr-only">Username</label>
-            <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" required autofocus />
+            <input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="Username" value="<?php echo $username; ?>" required autofocus />
             <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required />
+            <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" value="<?php echo $password; ?>" required />
             <div class="checkbox mb-3">
                 <label>
                     <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe" />Remember me
                 </label>
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            <?php if (LocalSettings::$userCreationEnabled) :?>
+            <?php if (LocalSettings::$publicUserCreationEnabled) :?>
                 <a href="createuser.php">Need an account? Sign up.</a>
             <?php endif;?>
         </form>

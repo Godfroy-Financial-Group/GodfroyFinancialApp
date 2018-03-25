@@ -25,6 +25,7 @@ include_once("DataAccess/Repositories/DBNewsletterSubscriptionRepository.php");
 
 // ================ Services ==============
 include_once("Services/AuthenticationService.php");
+include_once("Services/UserCreationService.php");
 
 
 // ================================================================================

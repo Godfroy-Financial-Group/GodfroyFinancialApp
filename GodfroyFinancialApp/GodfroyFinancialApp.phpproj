@@ -25,6 +25,8 @@
     <Compile Include="Common\Footer.php" />
     <Compile Include="Common\Header.php" />
     <Compile Include="Common\IncludeAll.php" />
+    <Compile Include="Common\Services\UserCreationService.php" />
+    <Compile Include="edituser.php" />
     <Compile Include="createuser.php" />
     <Compile Include="newslettersubscriptions.php" />
     <Compile Include="testimonies.php" />

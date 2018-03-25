@@ -29,6 +29,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="index.php">Home</a>
                     </li>
+                    <?php if (isset($_SESSION["LoggedInUser"])): ?>
                     <li class="nav-item active">
                         <a class="nav-link" href="users.php">Users</a>
                     </li>
@@ -38,6 +39,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="newslettersubscriptions.php">Newsletter Subscriptions</a>
                     </li>
+                    <?php endif; ?>
                     <li class="divider"></li>
                 </ul>
                 <ul class="navbar-nav">
