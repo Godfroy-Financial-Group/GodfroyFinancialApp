@@ -13,9 +13,27 @@ if ($_POST) {
     $deletionError = "";
     $delete = $_POST["deleteItem"];
 
+    $subscribe = $_POST["subscribe"];
+    $name = $_POST["inputName"];
+    $email = $_POST["inputEmail"];
+
     if (!empty($delete)) {
         $newsletterSubscriptionRepo->delete($delete);
     }
+
+    if (!empty($subscribe)) {
+        $nameValidationError = "";
+        $emailValidationError = "";
+        if (empty($name)) { $nameValidationError = "Please enter a username"; }
+        if (empty($email)) { $emailValidationError = "Please enter an email"; }
+        if (empty($nameValidationError) && empty($emailValidationError)) {
+            $newsletterSubscription = NewsletterSubscription::FromAll(null, $name, $email, date('Y-m-d'));
+            $newsletterSubscriptionRepo->insert($newsletterSubscription);
+            $name = "";
+            $email = "";
+        }
+    }
+
 }
 
 // Get all the Testimonies
@@ -25,10 +43,8 @@ $newsletterSubscriptions = $newsletterSubscriptionRepo->getAll();
 <main role="main" class="container">
     <h1>Newsletter Subscriptions</h1>
     <hr />
-    <h2>Quick Actions</h2>
-    <hr />
-    <h2>Active Subscriptions</h2>
     <form action="newslettersubscriptions.php" method="post">
+        <h2>Active Subscriptions</h2>
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -67,6 +83,44 @@ $newsletterSubscriptions = $newsletterSubscriptionRepo->getAll();
                 </tr>
                 <?php endforeach;?>
             </tbody>
+            <tfoot>
+                <?php if (!empty($nameValidationError) || !empty($emailValidationError)) : ?>
+                <tr>
+                    <th></th>
+                    <th>
+                        <?php if (!empty($nameValidationError)): ?>
+                        <span class="alert alert-danger">
+                            <?php echo $nameValidationError;?>
+                        </span>
+                        <?php endif; ?>
+                    </th>
+                    <th>
+                        <?php if (!empty($emailValidationError)) : ?>
+                        <span class="alert alert-danger">
+                            <?php echo $emailValidationError;?>
+                        </span>
+                        <?php endif; ?>
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <?php endif; ?>
+                <tr>
+                    <th></th>
+                    <th>
+                        <label for="inputName" class="sr-only">Name</label>
+                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus />
+                    </th>
+                    <th>
+                        <label for="inputEmail" class="sr-only">Email</label>
+                        <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email Address" value="<?php echo $email; ?>" />
+                    </th>
+                    <th></th>
+                    <th>
+                        <button class="btn btn-md btn-primary btn-block" name="subscribe" type="submit" value="subscribe">Subscribe</button>
+                    </th>
+                </tr>
+            </tfoot>
         </table>
     </form>
 </main>

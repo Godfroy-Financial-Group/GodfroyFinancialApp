@@ -16,6 +16,10 @@ if ($_POST) {
     $activate = $_POST["activateItem"];
     $deactivate = $_POST["deactivateItem"];
 
+    $subscribe = $_POST["submitReview"];
+    $name = $_POST["inputName"];
+    $review = $_POST["inputReview"];
+
     if (!empty($delete)) {
         $testimonyRepo->delete($delete);
     }
@@ -37,6 +41,19 @@ if ($_POST) {
         $testimony->Active = false;
         $testimonyRepo->update($testimony);
     }
+
+    if (!empty($subscribe)) {
+        $nameValidationError = "";
+        $reviewValidationError = "";
+        if (empty($name)) { $nameValidationError = "Please enter a username"; }
+        if (empty($review)) { $reviewValidationError = "Please enter a review"; }
+        if (empty($nameValidationError) && empty($reviewValidationError)) {
+            $testimony = Testimony::FromAll(null, $name, $review, date('Y-m-d'), false, true);
+            $testimonyRepo->insert($testimony);
+            $name = "";
+            $review = "";
+        }
+    }
 }
 
 // Get all the Testimonies
@@ -46,9 +63,6 @@ $testimonies = $testimonyRepo->getAll();
 <main role="main" class="container">
     <h1>Testimonies</h1>
     <hr />
-    <h2>Quick Actions</h2>
-    <hr />
-
     <form action="testimonies.php" method="post">
         <h2>Approved Testimonies</h2>
         <table class="table table-striped">
@@ -97,6 +111,31 @@ $testimonies = $testimonyRepo->getAll();
                 </tr>
                 <?php endforeach;?>
             </tbody>
+            <tfoot>
+                <?php if (!empty($nameValidationError) || !empty($reviewValidationError)) : ?>
+                <tr>
+                    <th></th>
+                    <th><span class="alert alert-danger"><?php echo $nameValidationError;?></span></th>
+                    <th><span class="alert alert-danger"><?php echo $reviewValidationError;?></span></th>
+                    <th></th>
+                    <th></th>
+                </tr><?php endif; ?>
+                <tr>
+                    <th></th>
+                    <th>
+                        <label for="inputName" class="sr-only">Name</label>
+                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus />
+                    </th>
+                    <th>
+                        <label for="inputReview" class="sr-only">Email</label>
+                        <input type="text" id="inputReview" name="inputReview" class="form-control" placeholder="Review" value="<?php echo $review; ?>" />
+                    </th>
+                    <th></th>
+                    <th>
+                        <button class="btn btn-md btn-primary btn-block" name="submitReview" type="submit" value="submitReview">Submit</button>
+                    </th>
+                </tr>
+            </tfoot>
         </table>
         <hr />
         <h2>Unapproved Testimonies</h2>

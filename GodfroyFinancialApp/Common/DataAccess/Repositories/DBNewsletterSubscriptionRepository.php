@@ -33,13 +33,13 @@ class DBNewsletterSubscriptionRepository extends DBGenericRepository
     public function insert(NewsletterSubscription $item): bool {
         try {
             $query = "INSERT INTO $this->tableName (Name, EmailAddress, DateSubscriptionStarted) ".
-                    "VALUES(:Name, :EmailAddress, :Email, :DateSubscriptionStarted)";
+                    "VALUES(:Name, :EmailAddress, :DateSubscriptionStarted)";
 
             $stmt = $this->dbManager->GetConnection()->prepare($query);
             $stmt->execute(array(
-                ':Name' => $item->Username,
-                ':EmailAddress' => $item->Password,
-                ':DateSubscriptionStarted' => $item->Password,
+                ':Name' => $item->Name,
+                ':EmailAddress' => $item->EmailAddress,
+                ':DateSubscriptionStarted' => $item->DateSubscriptionStarted,
             ));
 
             return true;
@@ -62,8 +62,8 @@ class DBNewsletterSubscriptionRepository extends DBGenericRepository
             $stmt->execute(array(
                   ':ID' => $item->ID,
                   ':Name' => $item->Name,
-                  ':EmailAddress' => $item->Review,
-                  ':DateSubscriptionStarted' => $item->Timestamp,
+                  ':EmailAddress' => $item->EmailAddress,
+                  ':DateSubscriptionStarted' => $item->DateSubscriptionStarted,
                 ));
             return true;
         }
