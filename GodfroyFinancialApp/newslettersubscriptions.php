@@ -8,7 +8,7 @@ $LoggedInUser = isset($_SESSION["LoggedInUser"])?$_SESSION["LoggedInUser"]:(func
 // Setup Mailchimp MailChimp to get Subscriptions
 use \DrewM\MailChimp\MailChimp;
 
-try {
+//try {
     if (LocalSettings::GetInstance()->IsMailChimpSetup()) {
         $mailChimp = new MailChimp(LocalSettings::GetInstance()->MailChimpAPIKey);
         $mailChimpLists = $mailChimp->get("lists")["lists"];
@@ -27,8 +27,7 @@ try {
 
         //$mailChimpListID = LocalSettings::GetInstance()->MailChimpListID;
     }
-}
-catch(Exception $e) { }
+//} catch(Exception $e) { }
 
 if ($_POST) {
     $deletionError = "";
@@ -111,7 +110,7 @@ catch(Exception $e) { }
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>ID</th>
+                    <!--<th>ID</th>-->
                     <th>Name</th>
                     <th>Email Address</th>
                     <th>Date Subscription Started</th>
@@ -121,9 +120,7 @@ catch(Exception $e) { }
             <tbody>
                 <?php foreach ($newsletterSubscriptions as $value) :?>
                 <tr>
-                    <td>
-                        <?php echo $value->ID; ?>
-                    </td>
+                    <!--<td><?php echo $value->ID; ?></td>-->
                     <td>
                         <?php echo $value->Name; ?>
                     </td>
@@ -149,7 +146,7 @@ catch(Exception $e) { }
             <tfoot>
                 <?php if (!empty($nameValidationError) || !empty($emailValidationError)) : ?>
                 <tr>
-                    <th></th>
+                    <!--<th></th>-->
                     <th>
                         <?php if (!empty($nameValidationError)): ?>
                         <span class="alert alert-danger">
@@ -169,10 +166,10 @@ catch(Exception $e) { }
                 </tr>
                 <?php endif; ?>
                 <tr>
-                    <th></th>
+                    <!--<th></th>-->
                     <th>
                         <label for="inputName" class="sr-only">Name</label>
-                        <input type="text" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus/ />
+                        <input type="text" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus />
                     </th>
                     <th>
                         <label for="inputEmail" class="sr-only">Email</label>

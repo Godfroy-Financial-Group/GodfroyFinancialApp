@@ -30,8 +30,11 @@ if ($_POST) {
         $nameValidationError = "";
         $valueValidationError = "";
         if (empty($name)) { $nameValidationError = "Please enter a name"; }
-        if (!empty($appSettingsRepo->getName($name))) { $nameValidationError = "A setting with this name already exists"; }
         if (empty($value)) { $valueValidationError = "Please enter a review"; }
+
+        $checkDuplicateSetting = $appSettingsRepo->getName($name);
+        if (!empty($checkDuplicateSetting) && $settingID != $checkDuplicateSetting->ID) { $nameValidationError = "A setting with this name already exists"; }
+
         if (empty($nameValidationError) && empty($valueValidationError)) {
             $setting->Name = $name;
             $setting->Value = $value;

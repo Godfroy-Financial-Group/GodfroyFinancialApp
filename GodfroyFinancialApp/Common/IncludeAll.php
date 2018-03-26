@@ -5,7 +5,7 @@ if (empty($pageTitle)) {
     $pageTitle = "";
 }
 
-$supportedImageTypes = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
+//$supportedImageTypes = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
 date_default_timezone_set("America/Toronto");
 
 // ========= ===== Pre-Framework Settings ===============

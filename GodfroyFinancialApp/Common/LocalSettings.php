@@ -37,7 +37,7 @@ class LocalSettings
 
 
     public function LoadSettings() {
-        $this->MailChimpAPIKey = $this->appSettingsRepo->getName(self::$MailChimpAPIKeySettingName);
+        $this->MailChimpAPIKey = $this->appSettingsRepo->getName(self::$MailChimpAPIKeySettingName)->Value;
     }
 }
 
