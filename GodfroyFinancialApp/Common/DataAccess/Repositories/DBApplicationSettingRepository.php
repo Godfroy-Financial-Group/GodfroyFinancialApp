@@ -30,15 +30,39 @@ class DBApplicationSettingRepository extends DBGenericRepository
         }
     }
 
+    public function getName($name) : ?ApplicationSetting {
+        try {
+            $result = $this->dbManager->queryByFilter($this->tableName, "Name", $this->dbManager->escapeString($name));
+            $result->setFetchMode(PDO::FETCH_CLASS, 'ApplicationSetting');
+            $fetch = $result->fetchAll();
+            return $fetch[0];
+        }
+        catch(PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+
+    public function getGroup($group) : ?ApplicationSetting {
+        try {
+            $result = $this->dbManager->queryByFilter($this->tableName, "Grouping", $this->dbManager->escapeString($group));
+            $result->setFetchMode(PDO::FETCH_CLASS, 'ApplicationSetting');
+            $fetch = $result->fetchAll();
+            return $fetch[0];
+        }
+        catch(PDOException $e) {
+            echo 'Error: ' . $e->getMessage();
+        }
+    }
+
     public function insert(ApplicationSetting $item): bool {
         try {
-            $query = "INSERT INTO $this->tableName (Name, Group, Value) ".
+            $query = "INSERT INTO $this->tableName (Name, Grouping, Value) ".
                     "VALUES(:Name, :Group, :Value)";
 
             $stmt = $this->dbManager->GetConnection()->prepare($query);
             $stmt->execute(array(
                 ':Name' => $item->Name,
-                ':Group' => $item->Group,
+                ':Group' => $item->Grouping,
                 ':Value' => $item->Value
             ));
 
@@ -54,7 +78,7 @@ class DBApplicationSettingRepository extends DBGenericRepository
         try {
             $query = "UPDATE $this->tableName SET ".
                         "Name = :Name, ".
-                        "Group = :Group, ".
+                        "Grouping = :Group, ".
                         "Value = :Value ".
                     "WHERE ID = :ID";
 
@@ -62,7 +86,7 @@ class DBApplicationSettingRepository extends DBGenericRepository
             $stmt->execute(array(
                   ':ID' => $item->ID,
                   ':Name' => $item->Name,
-                  ':Group' => $item->Group,
+                  ':Group' => $item->Grouping,
                   ':Value' => $item->Value,
                 ));
             return true;

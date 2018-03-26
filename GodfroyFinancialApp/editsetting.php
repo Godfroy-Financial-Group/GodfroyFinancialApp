@@ -11,12 +11,13 @@ $appSettingsRepo = new DBApplicationSettingRepository($dbManager);
 
 $settingID = $_GET["settingID"];
 $setting = $appSettingsRepo->getID($settingID);
-if (empty($testimony)) {
+if (empty($setting)) {
     header("Location: settings.php");
     die();
 }
 
 $name = $setting->Name;
+$group = $setting->Group;
 $value = $setting->Value;
 
 if ($_POST) {
@@ -29,7 +30,6 @@ if ($_POST) {
         $nameValidationError = "";
         $reviewValidationError = "";
         if (empty($name)) { $nameValidationError = "Please enter a name"; }
-        if (empty($group)) { $groupValidationError = "Please enter a group"; }
         if (empty($value)) { $valueValidationError = "Please enter a review"; }
         if (empty($nameValidationError) && empty($reviewValidationError)) {
             $setting->Name = $name;
@@ -55,11 +55,6 @@ if ($_POST) {
                     <?php echo $nameValidationError;?>
                 </span>
             <?php endif; ?>
-            <?php if (!empty($groupValidationError)): ?>
-            <span class="alert alert-danger">
-                <?php echo $groupValidationError;?>
-            </span>
-            <?php endif; ?>
             <?php if (!empty($valueValidationError)): ?>
                 <span class="alert alert-danger">
                     <?php echo $valueValidationError;?>
@@ -72,13 +67,13 @@ if ($_POST) {
             </p>
 
             <label for="inputName" class="sr-only">Name</label>
-            <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus />
+            <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus required/>
 
             <label for="inputGroup" class="sr-only">Group</label>
             <input type="text" id="inputGroup" name="inputGroup" class="form-control" placeholder="Group" value="<?php echo $group; ?>" />
 
             <label for="inputValue" class="sr-only">Value</label>
-            <input type="text" id="inputValue" name="inputValue" class="form-control" placeholder="Value" value="<?php echo $value; ?>" />
+            <input type="text" id="inputValue" name="inputValue" class="form-control" placeholder="Value" value="<?php echo $value; ?>" required/>
 
             <button class="btn btn-md btn-primary btn-block" name="editSetting" type="submit" value="editSetting">Submit</button>
         </form>

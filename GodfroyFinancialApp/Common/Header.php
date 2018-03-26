@@ -40,14 +40,16 @@
                         <a class="nav-link" href="newslettersubscriptions.php">Newsletter Subscriptions</a>
                     </li>
                     <?php endif; ?>
-                    <li class="divider"></li>
                 </ul>
                 <ul class="navbar-nav">
                     <?php if (isset($_SESSION["LoggedInUser"])): ?>
                     <li class="nav-item">
+                        <a class="nav-link" href="settings.php">Settings</a>
+                    </li>
+                    <li class="nav-divider"></li>
+                    <li class="nav-item">
                         <a class="nav-link" href="edituser.php?userid=<?php echo $_SESSION["LoggedInUser"]->ID?>"><?php echo $_SESSION["LoggedInUser"]->Username?></a>
                     </li>
-                    <li class="divider"></li>
                     <li class="nav-item">
                         <a class="nav-link" href="logout.php">Logout</a>
                     </li>

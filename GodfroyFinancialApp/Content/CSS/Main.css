@@ -28,6 +28,11 @@ body > .container {
     padding-left: 15px;
 }
 
+.nav-divider {
+    width: 1px;
+    border-right: 1px solid #fff;
+}
+
 /* Branding */
 .navbar-brand {
     max-height: 55px;

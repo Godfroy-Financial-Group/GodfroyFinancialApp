@@ -27,11 +27,10 @@ if ($_POST) {
         $groupValidationError = "";
         $valueValidationError = "";
         if (empty($name)) { $nameValidationError = "Please enter a name"; }
-        if (empty($group)) { $groupValidationError = "Please enter a group"; }
         if (empty($value)) { $valueValidationError = "Please enter a value"; }
         if (empty($nameValidationError) && empty($valueValidationError)) {
             $appSetting = ApplicationSetting::FromAll(null, $name, $group, $value);
-            $appSettingsRepo->insert($testimony);
+            $appSettingsRepo->insert($appSetting);
             $name = "";
             $group = "";
             $value = "";
@@ -59,20 +58,11 @@ $appSettings = $appSettingsRepo->getAll();
             </thead>
             <tbody>
                 <?php foreach ($appSettings as $value) :?>
-                <?php if (!$value->Approved) continue; ?>
                 <tr>
-                    <td>
-                        <?php echo $value->ID; ?>
-                    </td>
-                    <td>
-                        <?php echo $value->Name; ?>
-                    </td>
-                    <td>
-                        <?php echo $value->Group; ?>
-                    </td>
-                    <td>
-                        <?php echo $value->Value; ?>
-                    </td>
+                    <td><?php echo $value->ID; ?></td>
+                    <td><?php echo $value->Name; ?></td>
+                    <td><?php echo $value->Grouping; ?></td>
+                    <td><?php echo $value->Value; ?></td>
                     <td>
                         <div class="btn-group" role="group">                           
                             <button id="settingsDangerButton" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -98,13 +88,7 @@ $appSettings = $appSettingsRepo->getAll();
                         </span>
                         <?php endif; ?>
                     </th>
-                    <th>
-                        <?php if (!empty($groupValidationError)): ?>
-                        <span class="alert alert-danger">
-                            <?php echo $groupValidationError;?>
-                        </span>
-                        <?php endif; ?>
-                    </th>
+                    <th></th>
                     <th>
                         <?php if (!empty($valueValidationError)): ?>
                         <span class="alert alert-danger">
@@ -113,13 +97,13 @@ $appSettings = $appSettingsRepo->getAll();
                         <?php endif; ?>
                     </th>
                     <th></th>
-                    <th></th>
-                </tr><?php endif; ?>
+                </tr>
+                <?php endif; ?>
                 <tr>
                     <th></th>
                     <th>
                         <label for="inputName" class="sr-only">Name</label>
-                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus />
+                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus required/ />
                     </th>
                     <th>
                         <label for="inputGroup" class="sr-only">Group</label>
@@ -127,9 +111,8 @@ $appSettings = $appSettingsRepo->getAll();
                     </th>
                     <th>
                         <label for="inputValue" class="sr-only">Value</label>
-                        <input type="text" id="inputValue" name="inputValue" class="form-control" placeholder="Value" value="<?php echo $value; ?>" />
+                        <input type="text" id="inputValue" name="inputValue" class="form-control" placeholder="Value" value="<?php echo $value; ?>" required />
                     </th>
-                    <th></th>
                     <th>
                         <button class="btn btn-md btn-primary btn-block" name="submitSetting" type="submit" value="submitSetting">Submit</button>
                     </th>

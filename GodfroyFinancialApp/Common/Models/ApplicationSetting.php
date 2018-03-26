@@ -12,7 +12,7 @@ class ApplicationSetting
 {
     public $ID;
     public $Name;
-    public $Group;
+    public $Grouping;
     public $Value;
 
     public function __construct() { }
@@ -21,7 +21,7 @@ class ApplicationSetting
         $appSetting = new ApplicationSetting();
         $appSetting->ID = $id;
         $appSetting->Name = $name;
-        $appSetting->Group = $group;
+        $appSetting->Grouping = $group;
         $appSetting->Value = $value;
         return $appSetting;
     }

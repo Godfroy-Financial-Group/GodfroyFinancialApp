@@ -136,11 +136,11 @@ $testimonies = $testimonyRepo->getAll();
                     <th></th>
                     <th>
                         <label for="inputName" class="sr-only">Name</label>
-                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus />
+                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus required/>
                     </th>
                     <th>
                         <label for="inputReview" class="sr-only">Email</label>
-                        <textarea id="inputReview" cols="40" rows="3" name="inputReview" class="form-control" placeholder="Review"><?php echo $review; ?></textarea>
+                        <textarea id="inputReview" cols="40" rows="3" name="inputReview" class="form-control" placeholder="Review" required><?php echo $review; ?></textarea>
                     </th>
                     <th></th>
                     <th>

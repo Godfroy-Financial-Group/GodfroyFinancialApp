@@ -1,10 +1,10 @@
 CREATE SCHEMA IF NOT EXISTS GodfroyFinancialGroup;
 
-#DROP TABLE IF EXISTS application_settings;
+DROP TABLE IF EXISTS application_settings;
 CREATE TABLE IF NOT EXISTS application_settings (
 	ID							INT 			PRIMARY	KEY AUTO_INCREMENT,
 	Name						VARCHAR(255)	NOT NULL,
-	Group						VARCHAR(255)	NOT NULL,
+    Grouping					VARCHAR(255),
 	Value		 				TEXT 			NOT NULL
 );
 
