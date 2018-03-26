@@ -39,22 +39,32 @@ try {
 } catch(Exception $e) { }
 
 if ($_POST) {
+    // Delete Data
     $deletionError = "";
     $delete = $_POST["deleteItem"];
 
+    // Subscribe Data
     $subscribe = $_POST["subscribe"];
     $name = $_POST["inputName"];
     $listID = $_POST["inputListID"];
-    $pageNumber = $_POST["inputPageNumber"];
     $email = $_POST["inputEmail"];
 
+    // Page Change Data
+    $pagePrev = $_POST["pagePrev"];
+    $pageNext = $_POST["pageNext"];
+    $pageChange = $_POST["pageChange"];
+    $pageNumber = $_POST["inputPageNumber"];
+
     // Set the Page Numbers
-    if (empty($pageNumber)) { $pageNumber = 0; }
+    //if (empty($pageNumber)) { $pageNumber = 0; }
+    if (empty($pagePrev) && empty($pageNext) && empty($pageChange)) { $pageNumber = 0; }
     else {
-        foreach ($newsletterLists as $list)
+        for ($i = 0; $i < count($newsletterLists); $i++)
         {
-            if ($list["listID"] == $listID) {
-                $list["currentPage"] = $pageNumber;
+            if ($newsletterLists[$i]["listID"] == $listID) {
+                if (!empty($pagePrev)) { $newsletterLists[$i]["currentPage"] = (int)$pagePrev; }
+                else if (!empty($pageNext)) { $newsletterLists[$i]["currentPage"] = (int)$pageNext; }
+                else if (!empty($pageChange)) { $newsletterLists[$i]["currentPage"] = (int)$pageNumber; }
                 break;
             }
         }
@@ -132,7 +142,27 @@ try {
     <hr />
     <form action="newslettersubscriptions.php" method="post">
         <h2><?php echo $list["name"]; ?></h2>
-        <input type="hidden" name="inputListID" value="<?php echo $list["id"]; ?>" />
+
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="submit" name="pagePrev" class="btn btn-secondary" value="<?php echo $list["currentPage"] - 1;?>">Previous</button>
+
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Change
+            </button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupPageChangeDropDown">
+                <?php
+                    $subscribedCount = $list["subscribedCount"];
+                    $perPage = $list["perPage"];
+                    $maxPages = ceil($subscribedCount / $perPage);
+                ?>
+                <?php for ($i = 0; $i < $maxPages; $i++) : ?>
+                <button type="submit" name="pageChange" class="dropdown-item" value="<?php echo $i; ?>"><?php echo $i + 1; ?></button>
+                <?php endfor; ?>
+            </div>
+            <button type="submit" name="pageNext" class="btn btn-secondary" value="<?php echo $list["currentPage"] + 1;?>">Next</button>
+        </div>
+
+        <input type="hidden" name="inputListID" value="<?php echo $list["listID"]; ?>" />
         <input type="hidden" name="inputPageNumber" value="<?php echo $list["currentPage"]; ?>" />
 
         <table class="table table-striped">
@@ -198,7 +228,7 @@ try {
                     <th></th>
                     <th>
                         <label for="inputName" class="sr-only">Name</label>
-                        <input type="text" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus />
+                        <input type="text" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" />
                     </th>
                     <th>
                         <label for="inputEmail" class="sr-only">Email</label>
