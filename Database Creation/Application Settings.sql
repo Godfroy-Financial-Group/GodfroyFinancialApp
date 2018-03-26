@@ -9,5 +9,4 @@ CREATE TABLE IF NOT EXISTS application_settings (
 );
 
 #INSERT INTO application_settings (Name, Value) ("publicUserCreationEnabled", "UserCreation", "false");
-
 SELECT * FROM application_settings;

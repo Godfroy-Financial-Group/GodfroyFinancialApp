@@ -11,7 +11,7 @@ use \DrewM\MailChimp\MailChimp;
 //try {
     if (LocalSettings::GetInstance()->IsMailChimpSetup()) {
         $mailChimp = new MailChimp(LocalSettings::GetInstance()->MailChimpAPIKey);
-        $mailChimpLists = $mailChimp->get("lists")["lists"];
+        $mailChimpLists = $mailChimp->get("lists", ["count" => 10])["lists"];
 
         $newsletterLists = array();
         foreach ($mailChimpLists as $value)
@@ -19,6 +19,9 @@ use \DrewM\MailChimp\MailChimp;
             $newList = [
                 "listID"        => $value["id"],
                 "name"          => $value["name"],
+                "count"         => $value["member_count"],
+                "currentPage"   => 0,
+                "perPage"       => 10,
                 "subscriptions" => array()
             ];
             array_push($newsletterLists, $newList);
@@ -71,13 +74,18 @@ if ($_POST) {
 
 try {
     if (LocalSettings::GetInstance()->IsMailChimpSetup()) {
-        foreach ($newsletterLists as $value)
+        foreach ($newsletterLists as $list)
         {
-            $listID = $value["listID"];
+            $listID = $list["listID"];
+            $currentPage = $list["currentPage"];
+            $count = $list["perPage"];
 
             // Get all the Testimonies
+            $results = $mailChimp->get("lists/$listID/members", [
+                    "count" => $count,
+                    "offset" => $currentPage * $count
+                ]);
             $newsletterSubscriptions = array();
-            $results = $mailChimp->get("lists/$listID/members");
             foreach ($results["members"] as $value)
             {
                 if ($value["status"] != "subscribed") continue;
@@ -89,7 +97,7 @@ try {
                 array_push($newsletterSubscriptions, $subscription);
             }
 
-            $value["subscriptions"] = $newsletterSubscriptions;
+            $list["subscriptions"] = $newsletterSubscriptions;
         }
     }
 }
