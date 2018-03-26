@@ -1,5 +1,5 @@
 <?php
-include_once("../LocalSettings.php");
+include_once("../DatabaseSettings.php");
 
 class DBManager
 {
@@ -9,8 +9,8 @@ class DBManager
     public function __construct() { }
     public function Connect() {
         try {
-            $this->m_connectionString = LocalSettings::$db_dbEngine.":host=".LocalSettings::$db_Host.";dbname=".LocalSettings::$db_dbName;
-            $this->Connection = new PDO($this->m_connectionString, LocalSettings::$db_Username, LocalSettings::$db_Password);
+            $this->m_connectionString = DatabaseSettings::$db_dbEngine.":host=".DatabaseSettings::$db_Host.";dbname=".DatabaseSettings::$db_dbName;
+            $this->Connection = new PDO($this->m_connectionString, DatabaseSettings::$db_Username, DatabaseSettings::$db_Password);
             $this->Connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         catch(PDOException $e) {
@@ -65,7 +65,7 @@ class DBManager
     }
 
     function EscapeString(string $string) : string {
-        $escaped = $string;//$this->GetConnection()->quote($string);
+        $escaped = $string; //$this->GetConnection()->quote($string);
         return $escaped;
     }
 }

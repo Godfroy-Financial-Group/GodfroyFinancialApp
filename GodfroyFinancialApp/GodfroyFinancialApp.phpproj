@@ -26,6 +26,7 @@
     <Compile Include="Common\Footer.php" />
     <Compile Include="Common\Header.php" />
     <Compile Include="Common\IncludeAll.php" />
+    <Compile Include="Common\DatabaseSettings.php" />
     <Compile Include="Common\Models\ApplicationSetting.php" />
     <Compile Include="Common\Services\UserCreationService.php" />
     <Compile Include="editsetting.php" />

@@ -39,6 +39,9 @@ if ($_POST) {
     }
 }
 
+// Reload the Settings
+$instance = LocalSettings::GetInstance()->LoadSettings();
+
 // Get all the Testimonies
 $appSettings = $appSettingsRepo->getAll();
 ?>

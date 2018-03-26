@@ -1,4 +1,4 @@
-<?php include_once("Common/IncludeAll.php"); ?>
+<?php $pageTitle = "User Creation"; include_once("Common/IncludeAll.php"); ?>
 <?php
 
 if ($_POST) {

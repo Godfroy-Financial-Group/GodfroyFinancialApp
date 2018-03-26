@@ -1,4 +1,4 @@
-<?php $pageTitle = "Testimonies"; include_once("Common/Header.php"); ?>
+<?php $pageTitle = "Edit Setting"; include_once("Common/Header.php"); ?>
 <?php
 
 // If user is logged in, assign User object to $LoggedInUser, otherwise redirect to login and die (self-executing function)

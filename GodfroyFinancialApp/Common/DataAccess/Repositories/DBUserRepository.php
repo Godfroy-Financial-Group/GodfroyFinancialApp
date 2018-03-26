@@ -7,7 +7,7 @@ class DBUserRepository extends DBGenericRepository
 
     public function getAll() : array {
         try {
-            $result = $this->dbManager->queryAll($this->tableName);
+            $result = $this->dbManager->QueryAll($this->tableName);
             $result->setFetchMode(PDO::FETCH_CLASS, 'User');
             $fetch = $result->fetchAll();
             return $fetch;
@@ -20,7 +20,7 @@ class DBUserRepository extends DBGenericRepository
 
     public function getID($key) : ?User {
         try {
-            $result = $this->dbManager->queryByFilter($this->tableName, "ID", $this->dbManager->escapeString($key));
+            $result = $this->dbManager->QueryByFilter($this->tableName, "ID", $this->dbManager->escapeString($key));
             $result->setFetchMode(PDO::FETCH_CLASS, 'User');
             $fetch = $result->fetchAll();
             return $fetch[0];
@@ -32,7 +32,7 @@ class DBUserRepository extends DBGenericRepository
 
     public function getUsername($username) : ?User {
         try {
-            $result = $this->dbManager->queryByFilter($this->tableName, "Username", $this->dbManager->escapeString($username));
+            $result = $this->dbManager->QueryByFilter($this->tableName, "Username", $this->dbManager->escapeString($username));
             $result->setFetchMode(PDO::FETCH_CLASS, 'User');
             $fetch = $result->fetchAll();
             return $fetch[0];
@@ -44,7 +44,7 @@ class DBUserRepository extends DBGenericRepository
 
     public function getEmail($email) : ?User {
         try {
-            $result = $this->dbManager->queryByFilter($this->tableName, "Email", $this->dbManager->escapeString($email));
+            $result = $this->dbManager->QueryByFilter($this->tableName, "Email", $this->dbManager->escapeString($email));
             $result->setFetchMode(PDO::FETCH_CLASS, 'User');
             $fetch = $result->fetchAll();
             return $fetch[0];
@@ -56,7 +56,7 @@ class DBUserRepository extends DBGenericRepository
 
     public function getAuthToken($username) : ?User {
         try {
-            $result = $this->dbManager->queryByFilter($this->tableName, "AuthToken", $this->dbManager->escapeString($username));
+            $result = $this->dbManager->QueryByFilter($this->tableName, "AuthToken", $this->dbManager->escapeString($username));
             $result->setFetchMode(PDO::FETCH_CLASS, 'User');
             $fetch = $result->fetchAll();
             return $fetch[0];

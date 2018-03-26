@@ -9,38 +9,35 @@ class LocalSettings
     // Singleton
     private static $instance;
     public static function GetInstance() : LocalSettings {
-        if ( is_null( self::$instance ) )
-        {
-            self::$instance = new self();
-        }
-        return self::$instance;
+        if (empty(LocalSettings::$instance)) { LocalSettings::$instance = new LocalSettings(); }
+        return LocalSettings::$instance;
     }
-
-    // DB Information
-    public static $db_dbEngine = "mysql";
-    public static $db_Host = "localhost";
-    public static $db_Username = "root";
-    public static $db_Password = "password";
-    public static $db_dbName = "GodfroyFinancialGroup";
-    public static $db_Port = 3306;
 
     // App Information
     public $publicUserCreationEnabled = false;
     public $adminUserCreationEnabled = true;
 
     // API Keys
+    public static $MailChimpAPIKeySettingName = "MailChimpAPIKey";
     public $MailChimpAPIKey = "";
-    public $MailChimpListID = "";
-    public function IsMailChimpSetup() :bool {
-        return !empty($this->MailChimpAPIKey) && !empty($this->MailChimpListID);
+    public function IsMailChimpSetup() : bool {
+        return !empty($this->MailChimpAPIKey);
     }
 
     private $dbManager;
-    public $appSettingsRepo;
+    private $appSettingsRepo;
 
-    public function __construct() {
+    private function __construct() {
         $this->dbManager = new DBManager();
         $this->appSettingsRepo = new DBApplicationSettingRepository($this->dbManager);
+        $this->dbManager->connect();
+
+        $this->LoadSettings();
+    }
+
+
+    public function LoadSettings() {
+        $this->MailChimpAPIKey = $this->appSettingsRepo->getName(self::$MailChimpAPIKeySettingName);
     }
 }
 

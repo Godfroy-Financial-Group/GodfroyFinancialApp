@@ -7,7 +7,7 @@ class DBApplicationSettingRepository extends DBGenericRepository
 
     public function getAll() : array {
         try {
-            $result = $this->dbManager->queryAll($this->tableName);
+            $result = $this->dbManager->QueryAll($this->tableName);
             $result->setFetchMode(PDO::FETCH_CLASS, 'ApplicationSetting');
             $fetch = $result->fetchAll();
             return $fetch;
@@ -20,7 +20,7 @@ class DBApplicationSettingRepository extends DBGenericRepository
 
     public function getID($key) : ?ApplicationSetting {
         try {
-            $result = $this->dbManager->queryByFilter($this->tableName, "ID", $this->dbManager->escapeString($key));
+            $result = $this->dbManager->QueryByFilter($this->tableName, "ID", $this->dbManager->escapeString($key));
             $result->setFetchMode(PDO::FETCH_CLASS, 'ApplicationSetting');
             $fetch = $result->fetchAll();
             return $fetch[0];
@@ -32,7 +32,7 @@ class DBApplicationSettingRepository extends DBGenericRepository
 
     public function getName($name) : ?ApplicationSetting {
         try {
-            $result = $this->dbManager->queryByFilter($this->tableName, "Name", $this->dbManager->escapeString($name));
+            $result = $this->dbManager->QueryByFilter($this->tableName, "Name", $this->dbManager->escapeString($name));
             $result->setFetchMode(PDO::FETCH_CLASS, 'ApplicationSetting');
             $fetch = $result->fetchAll();
             return $fetch[0];
@@ -44,7 +44,7 @@ class DBApplicationSettingRepository extends DBGenericRepository
 
     public function getGroup($group) : ?ApplicationSetting {
         try {
-            $result = $this->dbManager->queryByFilter($this->tableName, "Grouping", $this->dbManager->escapeString($group));
+            $result = $this->dbManager->QueryByFilter($this->tableName, "Grouping", $this->dbManager->escapeString($group));
             $result->setFetchMode(PDO::FETCH_CLASS, 'ApplicationSetting');
             $fetch = $result->fetchAll();
             return $fetch[0];

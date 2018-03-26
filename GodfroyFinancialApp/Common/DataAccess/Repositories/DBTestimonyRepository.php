@@ -7,7 +7,7 @@ class DBTestimonyRepository extends DBGenericRepository
 
     public function getAll() : array {
         try {
-            $result = $this->dbManager->queryAll($this->tableName);
+            $result = $this->dbManager->QueryAll($this->tableName);
             $result->setFetchMode(PDO::FETCH_CLASS, 'Testimony');
             $fetch = $result->fetchAll();
             return $fetch;
@@ -20,7 +20,7 @@ class DBTestimonyRepository extends DBGenericRepository
 
     public function getID($key) : ?Testimony {
         try {
-            $result = $this->dbManager->queryByFilter($this->tableName, "ID", $this->dbManager->escapeString($key));
+            $result = $this->dbManager->QueryByFilter($this->tableName, "ID", $this->dbManager->escapeString($key));
             $result->setFetchMode(PDO::FETCH_CLASS, 'Testimony');
             $fetch = $result->fetchAll();
             return $fetch[0];

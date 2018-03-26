@@ -11,7 +11,21 @@ use \DrewM\MailChimp\MailChimp;
 try {
     if (LocalSettings::GetInstance()->IsMailChimpSetup()) {
         $mailChimp = new MailChimp(LocalSettings::GetInstance()->MailChimpAPIKey);
-        $mailChimpListID = LocalSettings::GetInstance()->MailChimpListID;
+        $mailChimpLists = $mailChimp->get("lists")["lists"];
+
+        $newsletterLists = array();
+        foreach ($mailChimpLists as $value)
+        {
+            $newList = [
+                "listID"        => $value["id"],
+                "name"          => $value["name"],
+                "subscriptions" => array()
+            ];
+            array_push($newsletterLists, $newList);
+        }
+
+
+        //$mailChimpListID = LocalSettings::GetInstance()->MailChimpListID;
     }
 }
 catch(Exception $e) { }
@@ -22,10 +36,11 @@ if ($_POST) {
 
     $subscribe = $_POST["subscribe"];
     $name = $_POST["inputName"];
+    $listID = $_POST["inputList"];
     $email = $_POST["inputEmail"];
 
     if (!empty($delete)) {
-        $mailChimp->delete("lists/$mailChimpListID/members/$delete");
+        $mailChimp->delete("lists/$listID/members/$delete");
     }
 
     if (!empty($subscribe)) {
@@ -39,7 +54,7 @@ if ($_POST) {
             $lastName = join(" ", $namesArray);
             if (empty($lastName)) { $lastName = "No Last Name"; }
 
-            $result = $mailChimp->post("lists/$mailChimpListID/members", [
+            $result = $mailChimp->post("lists/$listID/members", [
                 'email_address' => $email,
                 'status'        => 'subscribed',
                 'merge_fields'  => [
@@ -57,18 +72,25 @@ if ($_POST) {
 
 try {
     if (LocalSettings::GetInstance()->IsMailChimpSetup()) {
-        // Get all the Testimonies
-        $newsletterSubscriptions = array();
-        $results = $mailChimp->get("lists/$mailChimpListID/members");
-        foreach ($results["members"] as $value)
+        foreach ($newsletterLists as $value)
         {
-            if ($value["status"] != "subscribed") continue;
-            $subscription = new NewsletterSubscription();
-            $subscription->ID = $value["id"];
-            $subscription->Name = $value["merge_fields"]["FNAME"]." ".$value["merge_fields"]["LNAME"];
-            $subscription->EmailAddress = $value["email_address"];
-            $subscription->DateSubscriptionStarted = date("Y-m-d H:i:s", strtotime($value["last_changed"]));
-            array_push($newsletterSubscriptions, $subscription);
+            $listID = $value["listID"];
+
+            // Get all the Testimonies
+            $newsletterSubscriptions = array();
+            $results = $mailChimp->get("lists/$listID/members");
+            foreach ($results["members"] as $value)
+            {
+                if ($value["status"] != "subscribed") continue;
+                $subscription = new NewsletterSubscription();
+                $subscription->ID = $value["id"];
+                $subscription->Name = $value["merge_fields"]["FNAME"]." ".$value["merge_fields"]["LNAME"];
+                $subscription->EmailAddress = $value["email_address"];
+                $subscription->DateSubscriptionStarted = date("Y-m-d H:i:s", strtotime($value["last_changed"]));
+                array_push($newsletterSubscriptions, $subscription);
+            }
+
+            $value["subscriptions"] = $newsletterSubscriptions;
         }
     }
 }
@@ -81,9 +103,11 @@ catch(Exception $e) { }
     <h1>Newsletter Subscriptions</h1>
     <hr />
     <p>Newsletter services are managed by <a href="mailchimp.com">MailChimp</a>. Visit the link and login to your account in order to manage your account and start up campaigns</p>
+    <?php foreach ($newsletterLists as $list) : ?>
     <hr />
     <form action="newslettersubscriptions.php" method="post">
-        <h2>Active Subscriptions</h2>
+        <h2><?php echo $list["name"]; ?></h2>
+        <input type="hidden" name="inputList" value="<?php echo $list["id"]; ?>" />
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -148,11 +172,11 @@ catch(Exception $e) { }
                     <th></th>
                     <th>
                         <label for="inputName" class="sr-only">Name</label>
-                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus/>
+                        <input type="text" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus/ />
                     </th>
                     <th>
                         <label for="inputEmail" class="sr-only">Email</label>
-                        <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email Address" value="<?php echo $email; ?>"/>
+                        <input type="email" name="inputEmail" class="form-control" placeholder="Email Address" value="<?php echo $email; ?>" />
                     </th>
                     <th></th>
                     <th>
@@ -162,6 +186,7 @@ catch(Exception $e) { }
             </tfoot>
         </table>
     </form>
+    <?php endforeach; ?>
 </main>
 
 <?php include_once("Common/Footer.php"); ?>

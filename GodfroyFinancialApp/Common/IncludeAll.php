@@ -8,8 +8,8 @@ if (empty($pageTitle)) {
 $supportedImageTypes = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
 date_default_timezone_set("America/Toronto");
 
-// ========= ===== Settings ===============
-include_once("LocalSettings.php");
+// ========= ===== Pre-Framework Settings ===============
+include_once("DatabaseSettings.php");
 
 // ================ Models ================
 include_once("Models/User.php");
@@ -24,6 +24,9 @@ include_once("DataAccess/Repositories/DBUserRepository.php");
 include_once("DataAccess/Repositories/DBTestimonyRepository.php");
 include_once("DataAccess/Repositories/DBNewsletterSubscriptionRepository.php");
 include_once("DataAccess/Repositories/DBApplicationSettingRepository.php");
+
+// ========= ===== Post-Framework Settings ===============
+include_once("LocalSettings.php");
 
 // ================ Services ==============
 include_once("Services/AuthenticationService.php");
