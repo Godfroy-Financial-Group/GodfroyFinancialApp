@@ -8,7 +8,8 @@ $LoggedInUser = isset($_SESSION["LoggedInUser"])?$_SESSION["LoggedInUser"]:(func
 // Setup Mailchimp MailChimp to get Subscriptions
 use \DrewM\MailChimp\MailChimp;
 
-//try {
+try {
+    // Load the Lists
     if (LocalSettings::GetInstance()->IsMailChimpSetup()) {
         $mailChimp = new MailChimp(LocalSettings::GetInstance()->MailChimpAPIKey);
         $mailChimpLists = $mailChimp->get("lists", ["count" => 10])["lists"];
@@ -16,21 +17,26 @@ use \DrewM\MailChimp\MailChimp;
         $newsletterLists = array();
         foreach ($mailChimpLists as $value)
         {
+            $count             = $value["member_count"];
+            $unsubscribedCount = $value["unsubscribe_count"];
+            $cleanedCount      = $value["cleaned_count"];
+            $subscribedCount   = $count - $unsubscribedCount - $cleanedCount;
+
             $newList = [
-                "listID"        => $value["id"],
-                "name"          => $value["name"],
-                "count"         => $value["member_count"],
-                "currentPage"   => 0,
-                "perPage"       => 10,
-                "subscriptions" => array()
+                "listID"            => $value["id"],
+                "name"              => $value["name"],
+                "count"             => $count,
+                "unsubscribedCount" => $unsubscribedCount,
+                "cleanedCount"      => $cleanedCount,
+                "subscribedCount"   => $subscribedCount,
+                "currentPage"       => 0,
+                "perPage"           => 10,
+                "subscriptions"     => array()
             ];
             array_push($newsletterLists, $newList);
         }
-
-
-        //$mailChimpListID = LocalSettings::GetInstance()->MailChimpListID;
     }
-//} catch(Exception $e) { }
+} catch(Exception $e) { }
 
 if ($_POST) {
     $deletionError = "";
@@ -38,13 +44,28 @@ if ($_POST) {
 
     $subscribe = $_POST["subscribe"];
     $name = $_POST["inputName"];
-    $listID = $_POST["inputList"];
+    $listID = $_POST["inputListID"];
+    $pageNumber = $_POST["inputPageNumber"];
     $email = $_POST["inputEmail"];
 
+    // Set the Page Numbers
+    if (empty($pageNumber)) { $pageNumber = 0; }
+    else {
+        foreach ($newsletterLists as $list)
+        {
+            if ($list["listID"] == $listID) {
+                $list["currentPage"] = $pageNumber;
+                break;
+            }
+        }
+    }
+
+    // Handle Deletion
     if (!empty($delete)) {
         $mailChimp->delete("lists/$listID/members/$delete");
     }
 
+    // Handle Subscription
     if (!empty($subscribe)) {
         $nameValidationError = "";
         $emailValidationError = "";
@@ -69,21 +90,21 @@ if ($_POST) {
             $email = "";
         }
     }
-
 }
 
+// Load the Subscribed Members
 try {
     if (LocalSettings::GetInstance()->IsMailChimpSetup()) {
         foreach ($newsletterLists as $list)
         {
             $listID = $list["listID"];
             $currentPage = $list["currentPage"];
-            $count = $list["perPage"];
+            $perPage = $list["perPage"];
 
-            // Get all the Testimonies
+            // Get all the Members
             $results = $mailChimp->get("lists/$listID/members", [
-                    "count" => $count,
-                    "offset" => $currentPage * $count
+                    "count" => $perPage,
+                    "offset" => $currentPage * $perPage
                 ]);
             $newsletterSubscriptions = array();
             foreach ($results["members"] as $value)
@@ -100,10 +121,7 @@ try {
             $list["subscriptions"] = $newsletterSubscriptions;
         }
     }
-}
-catch(Exception $e) { }
-
-//$newsletterSubscriptions = $newsletterSubscriptionRepo->getAll();
+} catch(Exception $e) { }
 ?>
 
 <main role="main" class="container">
@@ -114,14 +132,16 @@ catch(Exception $e) { }
     <hr />
     <form action="newslettersubscriptions.php" method="post">
         <h2><?php echo $list["name"]; ?></h2>
-        <input type="hidden" name="inputList" value="<?php echo $list["id"]; ?>" />
+        <input type="hidden" name="inputListID" value="<?php echo $list["id"]; ?>" />
+        <input type="hidden" name="inputPageNumber" value="<?php echo $list["currentPage"]; ?>" />
+
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
                     <!--<th>ID</th>-->
+                    <th>Date Subscription Started</th>
                     <th>Name</th>
                     <th>Email Address</th>
-                    <th>Date Subscription Started</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -130,13 +150,13 @@ catch(Exception $e) { }
                 <tr>
                     <!--<td><?php echo $value->ID; ?></td>-->
                     <td>
+                        <?php echo $value->DateSubscriptionStarted; ?>
+                    </td>
+                    <td>
                         <?php echo $value->Name; ?>
                     </td>
                     <td>
                         <?php echo $value->EmailAddress; ?>
-                    </td>
-                    <td>
-                        <?php echo $value->DateSubscriptionStarted; ?>
                     </td>
                     <td>
                         <div class="btn-group" role="group">
@@ -155,6 +175,7 @@ catch(Exception $e) { }
                 <?php if (!empty($nameValidationError) || !empty($emailValidationError)) : ?>
                 <tr>
                     <!--<th></th>-->
+                    <th></th>
                     <th>
                         <?php if (!empty($nameValidationError)): ?>
                         <span class="alert alert-danger">
@@ -170,11 +191,11 @@ catch(Exception $e) { }
                         <?php endif; ?>
                     </th>
                     <th></th>
-                    <th></th>
                 </tr>
                 <?php endif; ?>
                 <tr>
                     <!--<th></th>-->
+                    <th></th>
                     <th>
                         <label for="inputName" class="sr-only">Name</label>
                         <input type="text" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus />
@@ -183,7 +204,6 @@ catch(Exception $e) { }
                         <label for="inputEmail" class="sr-only">Email</label>
                         <input type="email" name="inputEmail" class="form-control" placeholder="Email Address" value="<?php echo $email; ?>" />
                     </th>
-                    <th></th>
                     <th>
                         <button class="btn btn-md btn-primary btn-block" name="subscribe" type="submit" value="subscribe">Subscribe</button>
                     </th>
