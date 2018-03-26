@@ -28,10 +28,11 @@ if ($_POST) {
 
     if (!empty($editSetting)) {
         $nameValidationError = "";
-        $reviewValidationError = "";
+        $valueValidationError = "";
         if (empty($name)) { $nameValidationError = "Please enter a name"; }
+        if (!empty($appSettingsRepo->getName($name))) { $nameValidationError = "A setting with this name already exists"; }
         if (empty($value)) { $valueValidationError = "Please enter a review"; }
-        if (empty($nameValidationError) && empty($reviewValidationError)) {
+        if (empty($nameValidationError) && empty($valueValidationError)) {
             $setting->Name = $name;
             $setting->Value = $value;
             $appSettingsRepo->update($setting);
@@ -49,7 +50,7 @@ if ($_POST) {
     <div class="text-center">
         <form class="form-centered form-editsetting" method="post" action="editsetting.php?settingID=<?php echo $settingID ?>">
             <h1 class="h3 mb-3 font-weight-normal">Edit Testimony</h1>
-            <?php if (!empty($nameValidationError) || !empty($valueValidationError) || !empty($groupValidationError)) : ?>
+            <?php if (!empty($nameValidationError) || !empty($valueValidationError)) : ?>
                 <?php if (!empty($nameValidationError)): ?>
                 <span class="alert alert-danger">
                     <?php echo $nameValidationError;?>
@@ -66,11 +67,11 @@ if ($_POST) {
                 ID: <?php echo $settingID; ?>
             </p>
 
-            <label for="inputName" class="sr-only">Name</label>
-            <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus required/>
-
             <label for="inputGroup" class="sr-only">Group</label>
             <input type="text" id="inputGroup" name="inputGroup" class="form-control" placeholder="Group" value="<?php echo $group; ?>" />
+
+            <label for="inputName" class="sr-only">Name</label>
+            <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus required/>
 
             <label for="inputValue" class="sr-only">Value</label>
             <input type="text" id="inputValue" name="inputValue" class="form-control" placeholder="Value" value="<?php echo $value; ?>" required/>

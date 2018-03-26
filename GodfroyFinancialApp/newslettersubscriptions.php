@@ -148,11 +148,11 @@ catch(Exception $e) { }
                     <th></th>
                     <th>
                         <label for="inputName" class="sr-only">Name</label>
-                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus required/>
+                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus/>
                     </th>
                     <th>
                         <label for="inputEmail" class="sr-only">Email</label>
-                        <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email Address" value="<?php echo $email; ?>" required/>
+                        <input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="Email Address" value="<?php echo $email; ?>"/>
                     </th>
                     <th></th>
                     <th>

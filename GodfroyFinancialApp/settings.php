@@ -14,8 +14,8 @@ if ($_POST) {
     $delete = $_POST["deleteItem"];
 
     $submitSetting = $_POST["submitSetting"];
-    $name = $_POST["inputName"];
     $group = $_POST["inputGroup"];
+    $name = $_POST["inputName"];
     $value = $_POST["inputValue"];
 
     if (!empty($delete)) {
@@ -27,6 +27,7 @@ if ($_POST) {
         $groupValidationError = "";
         $valueValidationError = "";
         if (empty($name)) { $nameValidationError = "Please enter a name"; }
+        if (!empty($appSettingsRepo->getName($name))) { $nameValidationError = "A setting with this name already exists"; }
         if (empty($value)) { $valueValidationError = "Please enter a value"; }
         if (empty($nameValidationError) && empty($valueValidationError)) {
             $appSetting = ApplicationSetting::FromAll(null, $name, $group, $value);
@@ -50,27 +51,27 @@ $appSettings = $appSettingsRepo->getAll();
             <thead class="thead-dark">
                 <tr>
                     <th>ID</th>
-                    <th>Name</th>
                     <th>Group</th>
+                    <th>Name</th>
                     <th>Value</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($appSettings as $value) :?>
+                <?php foreach ($appSettings as $valueSetting) :?>
                 <tr>
-                    <td><?php echo $value->ID; ?></td>
-                    <td><?php echo $value->Name; ?></td>
-                    <td><?php echo $value->Grouping; ?></td>
-                    <td><?php echo $value->Value; ?></td>
+                    <td><?php echo $valueSetting->ID; ?></td>
+                    <td><?php echo $valueSetting->Grouping; ?></td>
+                    <td><?php echo $valueSetting->Name; ?></td>
+                    <td><?php echo $valueSetting->Value; ?></td>
                     <td>
                         <div class="btn-group" role="group">                           
                             <button id="settingsDangerButton" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Danger
                             </button>
                             <div class="dropdown-menu" aria-labelledby="btnGroupDangerDropDown">
-                                <a class="dropdown-item" href="editsetting.php?settingID=<?php echo $value->ID ?>">Edit</a>
-                                <button class="dropdown-item deleteItemButton" type="submit" name="deleteItem" value="<?php echo $value->ID ?>">Delete</button>
+                                <a class="dropdown-item" href="editsetting.php?settingID=<?php echo $valueSetting->ID ?>">Edit</a>
+                                <button class="dropdown-item deleteItemButton" type="submit" name="deleteItem" value="<?php echo $valueSetting->ID ?>">Delete</button>
                             </div>
                         </div>
                     </td>
@@ -78,8 +79,9 @@ $appSettings = $appSettingsRepo->getAll();
                 <?php endforeach;?>
             </tbody>
             <tfoot>
-                <?php if (!empty($nameValidationError) || !empty($groupValidationError) || !empty($groupValidationError)) : ?>
+                <?php if (!empty($nameValidationError) || !empty($valueValidationError)) : ?>
                 <tr>
+                    <th></th>
                     <th></th>
                     <th>
                         <?php if (!empty($nameValidationError)): ?>
@@ -88,9 +90,8 @@ $appSettings = $appSettingsRepo->getAll();
                         </span>
                         <?php endif; ?>
                     </th>
-                    <th></th>
                     <th>
-                        <?php if (!empty($valueValidationError)): ?>
+                        <?php if (!empty($valueValidationError)) : ?>
                         <span class="alert alert-danger">
                             <?php echo $valueValidationError;?>
                         </span>
@@ -102,19 +103,19 @@ $appSettings = $appSettingsRepo->getAll();
                 <tr>
                     <th></th>
                     <th>
-                        <label for="inputName" class="sr-only">Name</label>
-                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus required/ />
-                    </th>
-                    <th>
                         <label for="inputGroup" class="sr-only">Group</label>
                         <input type="text" id="inputGroup" name="inputGroup" class="form-control" placeholder="Group" value="<?php echo $group; ?>" />
                     </th>
                     <th>
-                        <label for="inputValue" class="sr-only">Value</label>
-                        <input type="text" id="inputValue" name="inputValue" class="form-control" placeholder="Value" value="<?php echo $value; ?>" required />
+                        <label for="inputName" class="sr-only">Name</label>
+                        <input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" value="<?php echo $name; ?>" autofocus />
                     </th>
                     <th>
-                        <button class="btn btn-md btn-primary btn-block" name="submitSetting" type="submit" value="submitSetting">Submit</button>
+                        <label for="inputValue" class="sr-only">Value</label>
+                        <input type="tel" id="inputValue" name="inputValue" class="form-control" placeholder="Value" value="<?php echo $value; ?>" />
+                    </th>
+                    <th>
+                        <button class="btn btn-md btn-primary btn-block" name="submitSetting" type="submit" value="submitSetting">Add</button>
                     </th>
                 </tr>
             </tfoot>
