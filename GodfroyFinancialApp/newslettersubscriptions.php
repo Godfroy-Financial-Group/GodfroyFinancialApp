@@ -7,8 +7,14 @@ $LoggedInUser = isset($_SESSION["LoggedInUser"])?$_SESSION["LoggedInUser"]:(func
 
 // Setup Mailchimp MailChimp to get Subscriptions
 use \DrewM\MailChimp\MailChimp;
-$mailChimp = new MailChimp(LocalSettings::$MailChimpAPIKey);
-$mailChimpListID = LocalSettings::$MailChimpListID;
+
+try {
+    if (LocalSettings::GetInstance()->IsMailChimpSetup()) {
+        $mailChimp = new MailChimp(LocalSettings::GetInstance()->MailChimpAPIKey);
+        $mailChimpListID = LocalSettings::GetInstance()->MailChimpListID;
+    }
+}
+catch(Exception $e) { }
 
 if ($_POST) {
     $deletionError = "";
@@ -34,13 +40,13 @@ if ($_POST) {
             if (empty($lastName)) { $lastName = "No Last Name"; }
 
             $result = $mailChimp->post("lists/$mailChimpListID/members", [
-				'email_address' => $email,
-				'status'        => 'subscribed',
+                'email_address' => $email,
+                'status'        => 'subscribed',
                 'merge_fields'  => [
                                     'FNAME' => $firstName,
                                     'LNAME' => $lastName
                                    ]
-			]);
+            ]);
 
             $name = "";
             $email = "";
@@ -49,24 +55,32 @@ if ($_POST) {
 
 }
 
-// Get all the Testimonies
-$newsletterSubscriptions = array();
-$results = $mailChimp->get("lists/$mailChimpListID/members");
-foreach ($results["members"] as $value)
-{
-    $subscription = new NewsletterSubscription();
-    $subscription->ID = $value["id"];
-    $subscription->Name = $value["merge_fields"]["FNAME"]." ".$value["merge_fields"]["LNAME"];
-    $subscription->EmailAddress = $value["email_address"];
-    $subscription->DateSubscriptionStarted = date("Y-m-d H:i:s", strtotime($value["last_changed"]));
-    array_push($newsletterSubscriptions, $subscription);
+try {
+    if (LocalSettings::GetInstance()->IsMailChimpSetup()) {
+        // Get all the Testimonies
+        $newsletterSubscriptions = array();
+        $results = $mailChimp->get("lists/$mailChimpListID/members");
+        foreach ($results["members"] as $value)
+        {
+            if ($value["status"] != "subscribed") continue;
+            $subscription = new NewsletterSubscription();
+            $subscription->ID = $value["id"];
+            $subscription->Name = $value["merge_fields"]["FNAME"]." ".$value["merge_fields"]["LNAME"];
+            $subscription->EmailAddress = $value["email_address"];
+            $subscription->DateSubscriptionStarted = date("Y-m-d H:i:s", strtotime($value["last_changed"]));
+            array_push($newsletterSubscriptions, $subscription);
+        }
+    }
 }
+catch(Exception $e) { }
 
 //$newsletterSubscriptions = $newsletterSubscriptionRepo->getAll();
 ?>
 
 <main role="main" class="container">
     <h1>Newsletter Subscriptions</h1>
+    <hr />
+    <p>Newsletter services are managed by <a href="mailchimp.com">MailChimp</a>. Visit the link and login to your account in order to manage your account and start up campaigns</p>
     <hr />
     <form action="newslettersubscriptions.php" method="post">
         <h2>Active Subscriptions</h2>
@@ -97,7 +111,7 @@ foreach ($results["members"] as $value)
                     </td>
                     <td>
                         <div class="btn-group" role="group">
-                            <button id="usersDangerButton" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button id="newsletterSubscriptionsDangerButton" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Danger
                             </button>
                             <div class="dropdown-menu" aria-labelledby="btnGroupDangerDropDown">

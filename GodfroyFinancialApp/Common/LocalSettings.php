@@ -1,7 +1,21 @@
 <?php
+include_once("Models/ApplicationSetting.php");
+include_once("DataAccess/DBManager.php");
+include_once("DataAccess/DBGenericRepository.php");
+include_once("DataAccess/Repositories/DBApplicationSettingRepository.php");
 
 class LocalSettings
 {
+    // Singleton
+    private static $instance;
+    public static function GetInstance() : LocalSettings {
+        if ( is_null( self::$instance ) )
+        {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     // DB Information
     public static $db_dbEngine = "mysql";
     public static $db_Host = "localhost";
@@ -11,14 +25,23 @@ class LocalSettings
     public static $db_Port = 3306;
 
     // App Information
-    public static $publicUserCreationEnabled = false;
-    public static $adminUserCreationEnabled = true;
+    public $publicUserCreationEnabled = false;
+    public $adminUserCreationEnabled = true;
 
     // API Keys
-    public static $MailChimpAPIKey = "";
-    public static $MailChimpListID = "";
+    public $MailChimpAPIKey = "";
+    public $MailChimpListID = "";
+    public function IsMailChimpSetup() :bool {
+        return !empty($this->MailChimpAPIKey) && !empty($this->MailChimpListID);
+    }
 
-    public function __construct() { }
+    private $dbManager;
+    public $appSettingsRepo;
+
+    public function __construct() {
+        $this->dbManager = new DBManager();
+        $this->appSettingsRepo = new DBApplicationSettingRepository($this->dbManager);
+    }
 }
 
 ?>

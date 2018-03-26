@@ -99,7 +99,7 @@ $testimonies = $testimonyRepo->getAll();
                             <button class="btn btn-success" type="submit" name="activateItem" value="<?php echo $value->ID ?>">Activate</button>
                             <?php endif;?>
                             
-                            <button id="usersDangerButton" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button id="approvedTestimoniesDangerButton" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Danger
                             </button>
                             <div class="dropdown-menu" aria-labelledby="btnGroupDangerDropDown">
@@ -115,8 +115,20 @@ $testimonies = $testimonyRepo->getAll();
                 <?php if (!empty($nameValidationError) || !empty($reviewValidationError)) : ?>
                 <tr>
                     <th></th>
-                    <th><span class="alert alert-danger"><?php echo $nameValidationError;?></span></th>
-                    <th><span class="alert alert-danger"><?php echo $reviewValidationError;?></span></th>
+                    <th>
+                        <?php if (!empty($nameValidationError)): ?>
+                        <span class="alert alert-danger">
+                            <?php echo $nameValidationError;?>
+                        </span>
+                        <?php endif; ?>
+                    </th>
+                    <th><span class="alert alert-danger">
+                        <?php if (!empty($reviewValidationError)): ?>
+                        <span class="alert alert-danger">
+                            <?php echo $reviewValidationError;?>
+                        </span>
+                        <?php endif; ?>
+                    </th>
                     <th></th>
                     <th></th>
                 </tr><?php endif; ?>
@@ -168,7 +180,7 @@ $testimonies = $testimonyRepo->getAll();
                     <td>
                         <div class="btn-group" role="group">
                             <button class="btn btn-success" type="submit" name="approveItem" value="<?php echo $value->ID ?>">Approve</button>
-                            <button id="usersDangerButton" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button id="unaprovedTestimoniesDangerButton" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Danger
                             </button>
                             <div class="dropdown-menu" aria-labelledby="btnGroupDangerDropDown">

@@ -18,8 +18,8 @@ class UserCreationService
     }
 
     public static function UserCreationEnabled() : bool {
-        if (LocalSettings::$publicUserCreationEnabled) return true;
-        if (LocalSettings::$adminUserCreationEnabled && isset($_SESSION["LoggedInUser"])) return true;
+        if (LocalSettings::GetInstance()->publicUserCreationEnabled) return true;
+        if (LocalSettings::GetInstance()->adminUserCreationEnabled && isset($_SESSION["LoggedInUser"])) return true;
         return false;
     }
 
